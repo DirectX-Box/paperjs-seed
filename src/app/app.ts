@@ -4,6 +4,7 @@ import { Toolbar } from '../toolbar';
 import { ToolboxesContainer } from '../toolbox';
 import { ColorToolbox, SaveToolbox } from '../toolboxes';
 import { FillTool } from '../tools';
+import { WallTool } from '../tools/wall-tool';
 import './app.scss';
 
 export class App {
@@ -24,6 +25,7 @@ export class App {
         const toolbar = Toolbar.create(element);
 
         toolbar.addTool(new FillTool(colorToolbox));
+        toolbar.addTool(new WallTool(colorToolbox));
 
         this.initializePlan();
     }
