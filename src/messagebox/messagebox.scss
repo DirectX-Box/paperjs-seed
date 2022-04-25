@@ -1,0 +1,17 @@
+@use 'sass:math';
+@use '../variables' as vars;
+
+.messagebox {
+    $height: 3rem;
+    position: absolute;
+    bottom: 30px;
+    display: none;
+
+    height: $height;
+    padding: 10px math.div($height, 2);
+    background-color: vars.$color-slate;
+    border-radius: math.div($height, 2);
+    box-shadow: vars.$popup-box-shadow;
+
+    color: white;
+}

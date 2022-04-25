@@ -1,0 +1,22 @@
+.action-list-toolbox  {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 8px;
+    column-gap: 8px;
+
+    .action-item {
+        cursor: pointer;
+        position: relative;
+        height: 1.3rem;
+        width: 100%;
+
+        &:hover {
+            text-decoration: underline;
+                background-color: #c13b41;
+        }
+
+        &:active {
+            background-color: "#c13b41";
+        }
+    }
+}
