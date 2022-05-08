@@ -30,7 +30,7 @@ export abstract class CeilingObject {
     public getCeilingObject() : CeilingObject { return this; }
 
     // Renvoie le nom de l'objet de construction
-    public getNameCeilingObject() : string { return this.name; }
+    public static getNameCeilingObject() : string { return ""; }
 
     // Renvoie l'origine de l'objet de construction
     //public getOriginBuildObject() : paper.Point { return this.origin; }

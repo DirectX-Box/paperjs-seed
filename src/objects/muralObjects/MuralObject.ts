@@ -29,7 +29,7 @@ export abstract class MuralObject {
     public getMuralObject() : MuralObject { return this; }
 
     // Renvoie le nom de l'objet de construction
-    public getNameMuralObject() : string { return this.name; }
+    public static getNameMuralObject() : string { return ""; }
 
     // Renvoie l'origine de l'objet de construction
     //public getOriginMuralObject() : paper.Point { return this.origin; }

@@ -1,4 +1,5 @@
 import * as paper from "paper";
+import {Size} from "paper/dist/paper-core";
 
 export abstract class GroundObject {
     // Nom de l'objet
@@ -29,7 +30,7 @@ export abstract class GroundObject {
     public getGroundObject() : GroundObject { return this; }
 
     // Renvoie le nom de l'objet de construction
-    public getNameGroundObject() : string { return this.name; }
+    public static getNameGroundObject() : string { return ""; }
 
     // Renvoie l'origine de l'objet de construction
     //public getOriginGroundObject() : paper.Point { return this.origin; }
@@ -50,4 +51,20 @@ export abstract class GroundObject {
     public setLength(length: number): void { this.length = length; }
 
     public setWidth(width: number): void { this.width = width; }
+
+    // *************** FUNCTIONS ********************
+    // Renvoie la couleur de base de l'objet
+    public getColor(): paper.Color { return new paper.Color("");}
+
+    // Créer la forme initiale
+    public createShape(origin : paper.Point) : paper.Path
+    {
+        return new paper.Path.Rectangle(origin, new Size(this.length, this.width));
+    }
+
+    // Met à jour la taille de la forme initiale
+    public updateShape(origin : paper.Point, eventPoint : paper.Point) : paper.Path
+    {
+        return new paper.Path.Rectangle(origin, new Size(eventPoint.x - origin.x, this.width));
+    }
 }

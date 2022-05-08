@@ -9,9 +9,9 @@ export class Wall extends BuildObject
         super("Mur", new paper.Point(originX, originY), true, height, length, width);
     }
 
-    //private setColor(): void {}
-    public getNameBuildObject() : string { return "Mur"; }
+    // Renvoie le nom de l'objet
+    public static getNameBuildObject() : string { return "Mur";}
 
     // Renvoie la couleur du mur
-    public getColor(): string { return "#607D8B";}
+    public getColor(): paper.Color { return new paper.Color("#607D8B");}
 }

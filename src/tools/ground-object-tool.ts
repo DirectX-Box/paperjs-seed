@@ -1,18 +1,21 @@
 import { icon } from '@fortawesome/fontawesome-svg-core';
 import { faChair } from '@fortawesome/free-solid-svg-icons';
 import * as paper from 'paper';
-import { Size } from 'paper/dist/paper-core';
 import { PaperTool } from '../toolbar';
 import { GroundObjectToolbox } from '../toolboxes';
+import {GroundObject} from "../objects";
 
 export class GroundObjectTool extends PaperTool {
     public readonly name = 'Poser un objet au sol';
 
     public readonly icon = icon(faChair);
 
-    public wall : InstanceType< typeof paper.Path.Rectangle > | null = null;  // Wall
+    public objectShape : InstanceType< typeof paper.Path.Rectangle > | null = null;
 
     public initPos : InstanceType< typeof paper.Point > | null = null;
+
+    // Objet au sol
+    public groundObject : InstanceType< typeof GroundObject> | null = null;
 
     public constructor(private readonly groundObjectToolbox: GroundObjectToolbox) {
         super();
@@ -39,9 +42,10 @@ export class GroundObjectTool extends PaperTool {
 
         if ( hit == null || hit.item == null ) {
             this.initPos = event.point;
-            this.wall = new paper.Path.Rectangle(event.point, new Size(1, 1)); // Will be moved to Wall class.
-            //this.wall.fillColor = this.groundObjectToolbox.currentPaperColor;
-            this.wall.selected = true;
+            this.groundObject = this.groundObjectToolbox.groundObject;
+            this.objectShape = this.groundObject!.createShape(this.initPos);
+            this.objectShape.fillColor = this.groundObject!.getColor();
+            this.objectShape.selected = true;
         }
     }
 
@@ -49,10 +53,10 @@ export class GroundObjectTool extends PaperTool {
         // const pos = paper.project.activeLayer.hitTest(event.point);
         if( this.initPos != null )
         {
-            this.wall?.remove();
-            this.wall = new paper.Path.Rectangle( this.initPos, new Size( event.point.x - this.initPos.x, 25 )); // Will be moved to Wall class.
-            //this.wall.fillColor = this.groundObjectToolbox.currentPaperColor;
-            this.wall.selected = true;
+            this.objectShape?.remove();
+            this.objectShape = this.groundObject!.updateShape(this.initPos, event.point);
+            this.objectShape.fillColor = this.groundObject!.getColor();
+            this.objectShape.selected = true;
         }
     }
 

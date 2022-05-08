@@ -1,7 +1,6 @@
 import { icon } from '@fortawesome/fontawesome-svg-core';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
 import * as paper from 'paper';
-import { Size } from 'paper/dist/paper-core';
 import { PaperTool } from '../toolbar';
 import {BuildObjectToolbox} from '../toolboxes';
 import { BuildObject } from '../objects'
@@ -43,15 +42,10 @@ export class WallTool extends PaperTool {
         const hit = paper.project.activeLayer.hitTest(event.downPoint);
 
         if ( hit == null || hit.item == null ) {
-            /*this.initPos = event.point;
-            this.wall = new paper.Path.Rectangle(event.point, new Size(1, 1)); // Will be moved to Wall class.
-            this.wall.fillColor = this.buildObjectToolbox.currentPaperColor;
-            this.wall.selected = true;*/
             this.initPos = event.point;
-            // On récupère le choix de l'utilisateur quant
             this.buildObject = this.buildObjectToolbox.buildObject;
-            this.objectShape = new paper.Path.Rectangle(this.initPos, new Size(this.buildObject!.getLengthBuildObject(), this.buildObject!.getWidthBuildObject()));
-            this.objectShape.fillColor = new paper.Color(this.buildObject!.getColor());
+            this.objectShape = this.buildObject!.createShape(this.initPos);
+            this.objectShape.fillColor = this.buildObject!.getColor();
             this.objectShape.selected = true;
         }
     }
@@ -61,8 +55,8 @@ export class WallTool extends PaperTool {
         if( this.initPos != null )
         {
             this.objectShape?.remove();
-            this.objectShape = new paper.Path.Rectangle( this.initPos, new Size( event.point.x - this.initPos.x, 25 )); // Will be moved to Wall class.
-            this.objectShape.fillColor = new paper.Color(this.buildObject!.getColor());
+            this.objectShape = this.buildObject!.updateShape(this.initPos, event.point);
+            this.objectShape.fillColor = this.buildObject!.getColor();
             this.objectShape.selected = true;
         }
     }

@@ -1,5 +1,5 @@
 import * as paper from "paper";
-//import {Size} from "paper/dist/paper-core";
+import {Size} from "paper/dist/paper-core";
 
 export abstract class BuildObject {
     // Nom de l'objet
@@ -30,7 +30,7 @@ export abstract class BuildObject {
     public getBuildObject() : BuildObject { return this; }
 
     // Renvoie le nom de l'objet de construction
-    public getNameBuildObject() : string { return this.name; }
+    public static getNameBuildObject() : string { return ""; }
 
     // Renvoie l'origine de l'objet de construction
     //public getOriginBuildObject() : paper.Point { return this.origin; }
@@ -54,5 +54,17 @@ export abstract class BuildObject {
 
     // *************** FUNCTIONS ********************
     // Renvoie la couleur de base de l'objet
-    public getColor(): string { return "";}
+    public getColor(): paper.Color { return new paper.Color("");}
+
+    // Créer la forme initiale
+    public createShape(origin : paper.Point) : paper.Path
+    {
+        return new paper.Path.Rectangle(origin, new Size(this.length, this.width));
+    }
+
+    // Met à jour la taille de la forme initiale
+    public updateShape(origin : paper.Point, eventPoint : paper.Point) : paper.Path
+    {
+        return new paper.Path.Rectangle(origin, new Size(eventPoint.x - origin.x, this.width));
+    }
 }
