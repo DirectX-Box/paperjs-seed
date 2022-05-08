@@ -1,20 +1,20 @@
 import { icon } from '@fortawesome/fontawesome-svg-core';
-import { faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding } from '@fortawesome/free-solid-svg-icons';
 import * as paper from 'paper';
 import { Size } from 'paper/dist/paper-core';
 import { PaperTool } from '../toolbar';
-import { ColorToolbox } from '../toolboxes';
+import { CeilingObjectToolbox } from '../toolboxes';
 
-export class WallTool extends PaperTool {
-    public readonly name = 'Tracer mur';
+export class CeilingObjectTool extends PaperTool {
+    public readonly name = 'Poser un objet au plafond';
 
-    public readonly icon = icon(faHouse);
+    public readonly icon = icon(faBuilding);
 
     public wall : InstanceType< typeof paper.Path.Rectangle > | null = null;  // Wall
 
     public initPos : InstanceType< typeof paper.Point > | null = null;
 
-    public constructor(private readonly colorToolbox: ColorToolbox) {
+    public constructor(private readonly ceilingObjectToolbox: CeilingObjectToolbox) {
         super();
 
         this.paperTool.onMouseDown = this.onMouseDown.bind(this);
@@ -25,13 +25,13 @@ export class WallTool extends PaperTool {
     public enable(): void {
         super.enable();
 
-        this.colorToolbox.visible = true;
+        this.ceilingObjectToolbox.visible = true;
     }
 
     public disable(): void {
         super.disable();
 
-        this.colorToolbox.visible = false;
+        this.ceilingObjectToolbox.visible = false;
     }
 
     public onMouseDown(event: paper.ToolEvent): void {
@@ -40,7 +40,7 @@ export class WallTool extends PaperTool {
         if ( hit == null || hit.item == null ) {
             this.initPos = event.point;
             this.wall = new paper.Path.Rectangle(event.point, new Size(1, 1)); // Will be moved to Wall class.
-            this.wall.fillColor = this.colorToolbox.currentPaperColor;
+            //this.wall.fillColor = this.ceilingObjectToolbox.currentPaperColor;
             this.wall.selected = true;
         }
     }
@@ -51,7 +51,7 @@ export class WallTool extends PaperTool {
         {
             this.wall?.remove();
             this.wall = new paper.Path.Rectangle( this.initPos, new Size( event.point.x - this.initPos.x, 25 )); // Will be moved to Wall class.
-            this.wall.fillColor = this.colorToolbox.currentPaperColor;
+            //this.wall.fillColor = this.ceilingObjectToolbox.currentPaperColor;
             this.wall.selected = true;
         }
     }

@@ -2,6 +2,7 @@ import * as paper from 'paper';
 
 export class Plan {
     public initialize(): void {
+        // Liste de Wall
         paper.view.center = new paper.Point(0, 0);
 
         // const decagon = new paper.Path.RegularPolygon(new paper.Point(0, 0), 10, 200);
