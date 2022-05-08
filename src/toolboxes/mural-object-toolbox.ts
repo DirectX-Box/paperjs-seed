@@ -30,8 +30,6 @@ export class MuralObjectToolbox extends Toolbox {
 
         element.appendChild(extinguisherButtonElement);
 
-        this.visible = true;
-
         return element;
     }
 

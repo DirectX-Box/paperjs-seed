@@ -10,4 +10,8 @@ export class Wall extends BuildObject
     }
 
     //private setColor(): void {}
+    public getNameBuildObject() : string { return "Mur"; }
+
+    // Renvoie la couleur du mur
+    public getColor(): string { return "#607D8B";}
 }

@@ -1,4 +1,5 @@
 import * as paper from "paper";
+//import {Size} from "paper/dist/paper-core";
 
 export abstract class BuildObject {
     // Nom de l'objet
@@ -50,4 +51,8 @@ export abstract class BuildObject {
     public setLength(length: number): void { this.length = length; }
 
     public setWidth(width: number): void { this.width = width; }
+
+    // *************** FUNCTIONS ********************
+    // Renvoie la couleur de base de l'objet
+    public getColor(): string { return "";}
 }

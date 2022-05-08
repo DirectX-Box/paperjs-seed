@@ -30,8 +30,6 @@ export class CeilingObjectToolbox extends Toolbox {
 
         element.appendChild(lampButtonElement);
 
-        this.visible = true;
-
         return element;
     }
 

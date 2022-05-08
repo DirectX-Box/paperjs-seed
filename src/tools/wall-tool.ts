@@ -3,18 +3,23 @@ import { faHouse } from '@fortawesome/free-solid-svg-icons';
 import * as paper from 'paper';
 import { Size } from 'paper/dist/paper-core';
 import { PaperTool } from '../toolbar';
-import { ColorToolbox } from '../toolboxes';
+import {BuildObjectToolbox} from '../toolboxes';
+import { BuildObject } from '../objects'
 
 export class WallTool extends PaperTool {
     public readonly name = 'Tracer mur';
 
     public readonly icon = icon(faHouse);
 
-    public wall : InstanceType< typeof paper.Path.Rectangle > | null = null;  // Wall
+    // Forme de l'objet
+    public objectShape : InstanceType< typeof paper.Path.Rectangle > | null = null;
 
     public initPos : InstanceType< typeof paper.Point > | null = null;
 
-    public constructor(private readonly colorToolbox: ColorToolbox) {
+    // Objet de construction
+    public buildObject : InstanceType< typeof BuildObject> | null = null;
+
+    public constructor(private readonly buildObjectToolbox: BuildObjectToolbox) {
         super();
 
         this.paperTool.onMouseDown = this.onMouseDown.bind(this);
@@ -25,23 +30,29 @@ export class WallTool extends PaperTool {
     public enable(): void {
         super.enable();
 
-        this.colorToolbox.visible = true;
+        this.buildObjectToolbox.visible = true;
     }
 
     public disable(): void {
         super.disable();
 
-        this.colorToolbox.visible = false;
+        this.buildObjectToolbox.visible = false;
     }
 
     public onMouseDown(event: paper.ToolEvent): void {
         const hit = paper.project.activeLayer.hitTest(event.downPoint);
 
         if ( hit == null || hit.item == null ) {
-            this.initPos = event.point;
+            /*this.initPos = event.point;
             this.wall = new paper.Path.Rectangle(event.point, new Size(1, 1)); // Will be moved to Wall class.
-            this.wall.fillColor = this.colorToolbox.currentPaperColor;
-            this.wall.selected = true;
+            this.wall.fillColor = this.buildObjectToolbox.currentPaperColor;
+            this.wall.selected = true;*/
+            this.initPos = event.point;
+            // On récupère le choix de l'utilisateur quant
+            this.buildObject = this.buildObjectToolbox.buildObject;
+            this.objectShape = new paper.Path.Rectangle(this.initPos, new Size(this.buildObject!.getLengthBuildObject(), this.buildObject!.getWidthBuildObject()));
+            this.objectShape.fillColor = new paper.Color(this.buildObject!.getColor());
+            this.objectShape.selected = true;
         }
     }
 
@@ -49,10 +60,10 @@ export class WallTool extends PaperTool {
         // const pos = paper.project.activeLayer.hitTest(event.point);
         if( this.initPos != null )
         {
-            this.wall?.remove();
-            this.wall = new paper.Path.Rectangle( this.initPos, new Size( event.point.x - this.initPos.x, 25 )); // Will be moved to Wall class.
-            this.wall.fillColor = this.colorToolbox.currentPaperColor;
-            this.wall.selected = true;
+            this.objectShape?.remove();
+            this.objectShape = new paper.Path.Rectangle( this.initPos, new Size( event.point.x - this.initPos.x, 25 )); // Will be moved to Wall class.
+            this.objectShape.fillColor = new paper.Color(this.buildObject!.getColor());
+            this.objectShape.selected = true;
         }
     }
 

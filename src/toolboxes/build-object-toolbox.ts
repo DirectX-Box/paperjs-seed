@@ -1,9 +1,12 @@
 //import { project } from 'paper';
 import { Toolbox } from '../toolbox';
+import {BuildObject, Divider, Wall} from '../objects'
 //import * as paper from 'paper';
 
 export class BuildObjectToolbox extends Toolbox {
     protected readonly title = 'Construction';
+
+    public buildObject : InstanceType< typeof BuildObject> | null = null;
 
     public constructor() {
         super();
@@ -30,23 +33,14 @@ export class BuildObjectToolbox extends Toolbox {
 
         element.appendChild(dividerButtonElement);
 
-        this.visible = true;
-
         return element;
     }
 
     private drawWall(): void {
-        /*const json = paper.project.exportJSON();
-
-        localStorage.setItem('planEditorSave', json);*/
+        this.buildObject = new Wall(0,0,0,1,1);
     }
 
     private drawDivider(): void {
-        /*const json = localStorage.getItem('planEditorSave');
-
-        if (json) {
-            project.clear();
-            project.importJSON(json);
-        }*/
+        this.buildObject = new Divider(0,0,0,1,1);
     }
 }

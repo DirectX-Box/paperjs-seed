@@ -39,8 +39,6 @@ export class GroundObjectToolbox extends Toolbox {
 
         element.appendChild(shelfButtonElement);
 
-        this.visible = true;
-
         return element;
     }
 

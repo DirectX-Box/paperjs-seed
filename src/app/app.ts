@@ -36,7 +36,7 @@ export class App {
         const toolbar = Toolbar.create(element);
 
         toolbar.addTool(new FillTool(colorToolbox));
-        toolbar.addTool(new WallTool(colorToolbox));
+        toolbar.addTool(new WallTool(buildObjectToolbox));
         toolbar.addTool(new CeilingObjectTool(ceilingObjectToolbox));
         toolbar.addTool(new GroundObjectTool(groundObjectToolbox));
         toolbar.addTool(new MuralObjectTool(muralObjectToolbox));
