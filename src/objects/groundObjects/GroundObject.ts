@@ -1,11 +1,14 @@
+import { PlanObject } from "../PlanObject";
+import { PlanPoint } from "../PlanPoint";
 import * as paper from "paper";
 import {Size} from "paper/dist/paper-core";
+import { PlanShape } from "../PlanShape";
 
-export abstract class GroundObject {
+export abstract class GroundObject extends PlanObject {
     // Nom de l'objet
     protected name: string;
     // Point d'origine de l'objet
-    protected origin: InstanceType< typeof paper.Point > | null = null;
+    protected origin: PlanPoint;
     // True si la taille peut être modifié
     protected canBeExtended: boolean;
     // hauteur de l'objet;
@@ -16,7 +19,8 @@ export abstract class GroundObject {
     protected width: number;
 
     // Constructeur d'un objet de construction
-    constructor(name: string, origin: paper.Point, canBeExtended: boolean, height: number, length: number, width: number) {
+    constructor(name: string, origin: PlanPoint, canBeExtended: boolean, height: number, length: number, width: number) {
+        super();
         this.name = name;
         this.origin = origin;
         this.canBeExtended = canBeExtended;
@@ -33,7 +37,7 @@ export abstract class GroundObject {
     public static getNameGroundObject() : string { return ""; }
 
     // Renvoie l'origine de l'objet de construction
-    //public getOriginGroundObject() : paper.Point { return this.origin; }
+    public getOriginGroundObject() : PlanPoint { return this.origin; }
 
     // Renvoie si l'objet peut être modifié en taille
     public canBeExtendedGroundObject() : boolean { return this.canBeExtended; }
@@ -57,9 +61,10 @@ export abstract class GroundObject {
     public getColor(): paper.Color { return new paper.Color("");}
 
     // Créer la forme initiale
-    public createShape(origin : paper.Point) : paper.Path
+    public createShape(origin : PlanPoint) : PlanShape
     {
-        return new paper.Path.Rectangle(origin, new Size(this.length, this.width));
+        // return new paper.Path.Rectangle(origin, new Size(this.length, this.width));
+        return new PlanShape();
     }
 
     // Met à jour la taille de la forme initiale
