@@ -51,4 +51,20 @@ export abstract class CeilingObject {
     public setLength(length: number): void { this.length = length; }
 
     public setWidth(width: number): void { this.width = width; }
+
+    // *************** FUNCTIONS ********************
+    // Renvoie la couleur de base de l'objet
+    public getColor(): paper.Color { return new paper.Color("");}
+
+    // Créer la forme initiale
+    public createShape(origin : paper.Point) : paper.Path
+    {
+        return new paper.Path.Circle(origin, this.width);
+    }
+
+    // Met à jour la taille de la forme initiale
+    public updateShape(origin : paper.Point, eventPoint : paper.Point) : paper.Path
+    {
+        return new paper.Path.Circle(origin, this.width + (origin.x - eventPoint.x));
+    }
 }

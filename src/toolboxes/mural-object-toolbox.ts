@@ -1,9 +1,11 @@
 //import { project } from 'paper';
 import { Toolbox } from '../toolbox';
+import {MuralObject, Extinguisher, Radiator} from "../objects";
 //import * as paper from 'paper';
 
 export class MuralObjectToolbox extends Toolbox {
     protected readonly title = 'Objet au mur';
+    public muralObject : InstanceType< typeof MuralObject> | null = null;
 
     public constructor() {
         super();
@@ -15,36 +17,29 @@ export class MuralObjectToolbox extends Toolbox {
         const radiatorButtonElement = document.createElement('button');
 
         radiatorButtonElement.classList.add('btn');
-        radiatorButtonElement.appendChild(document.createTextNode('Radiateur'));
+        radiatorButtonElement.appendChild(document.createTextNode(Radiator.getNameGroundObject()));
 
-        radiatorButtonElement.addEventListener('click', () => this.drawWall());
+        radiatorButtonElement.addEventListener('click', () => this.drawRadiator());
 
         element.appendChild(radiatorButtonElement);
 
         const extinguisherButtonElement = document.createElement('button');
 
         extinguisherButtonElement.classList.add('btn');
-        extinguisherButtonElement.appendChild(document.createTextNode('Extincteur'));
+        extinguisherButtonElement.appendChild(document.createTextNode(Extinguisher.getNameGroundObject()));
 
-        extinguisherButtonElement.addEventListener('click', () => this.drawDivider());
+        extinguisherButtonElement.addEventListener('click', () => this.drawExtinguisher());
 
         element.appendChild(extinguisherButtonElement);
 
         return element;
     }
 
-    private drawWall(): void {
-        /*const json = paper.project.exportJSON();
-
-        localStorage.setItem('planEditorSave', json);*/
+    private drawRadiator(): void {
+        this.muralObject = new Radiator(0,0,20,30,20);
     }
 
-    private drawDivider(): void {
-        /*const json = localStorage.getItem('planEditorSave');
-
-        if (json) {
-            project.clear();
-            project.importJSON(json);
-        }*/
+    private drawExtinguisher(): void {
+        this.muralObject = new Extinguisher(0,0,20,30,20);
     }
 }

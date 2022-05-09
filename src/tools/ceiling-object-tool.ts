@@ -1,18 +1,21 @@
 import { icon } from '@fortawesome/fontawesome-svg-core';
 import { faBuilding } from '@fortawesome/free-solid-svg-icons';
 import * as paper from 'paper';
-import { Size } from 'paper/dist/paper-core';
 import { PaperTool } from '../toolbar';
 import { CeilingObjectToolbox } from '../toolboxes';
+import {CeilingObject} from "../objects";
 
 export class CeilingObjectTool extends PaperTool {
-    public readonly name = 'Poser un objet au plafond';
+    public readonly name = 'Poser un objet au sol';
 
     public readonly icon = icon(faBuilding);
 
-    public wall : InstanceType< typeof paper.Path.Rectangle > | null = null;  // Wall
+    public objectShape : InstanceType< typeof paper.Path > | null = null;
 
     public initPos : InstanceType< typeof paper.Point > | null = null;
+
+    // Objet au sol
+    public ceilingObject : InstanceType< typeof CeilingObject> | null = null;
 
     public constructor(private readonly ceilingObjectToolbox: CeilingObjectToolbox) {
         super();
@@ -39,20 +42,20 @@ export class CeilingObjectTool extends PaperTool {
 
         if ( hit == null || hit.item == null ) {
             this.initPos = event.point;
-            this.wall = new paper.Path.Rectangle(event.point, new Size(1, 1)); // Will be moved to Wall class.
-            //this.wall.fillColor = this.ceilingObjectToolbox.currentPaperColor;
-            this.wall.selected = true;
+            this.ceilingObject = this.ceilingObjectToolbox.ceilingObject;
+            this.objectShape = this.ceilingObject!.createShape(this.initPos);
+            this.objectShape.fillColor = this.ceilingObject!.getColor();
+            this.objectShape.selected = true;
         }
     }
 
     public onMouseDrag(event: paper.ToolEvent): void {
-        // const pos = paper.project.activeLayer.hitTest(event.point);
         if( this.initPos != null )
         {
-            this.wall?.remove();
-            this.wall = new paper.Path.Rectangle( this.initPos, new Size( event.point.x - this.initPos.x, 25 )); // Will be moved to Wall class.
-            //this.wall.fillColor = this.ceilingObjectToolbox.currentPaperColor;
-            this.wall.selected = true;
+            this.objectShape?.remove();
+            this.objectShape = this.ceilingObject!.updateShape(this.initPos, event.point);
+            this.objectShape.fillColor = this.ceilingObject!.getColor();
+            this.objectShape.selected = true;
         }
     }
 

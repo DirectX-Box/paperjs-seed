@@ -1,4 +1,5 @@
 import * as paper from "paper";
+import {Size} from "paper/dist/paper-core";
 
 export abstract class MuralObject {
     // Nom de l'objet
@@ -50,4 +51,20 @@ export abstract class MuralObject {
     public setLength(length: number): void { this.length = length; }
 
     public setWidth(width: number): void { this.width = width; }
+
+    // *************** FUNCTIONS ********************
+    // Renvoie la couleur de base de l'objet
+    public getColor(): paper.Color { return new paper.Color("");}
+
+    // Créer la forme initiale
+    public createShape(origin : paper.Point) : paper.Path
+    {
+        return new paper.Path.Rectangle(origin, new Size(this.length, this.width));
+    }
+
+    // Met à jour la taille de la forme initiale
+    public updateShape(origin : paper.Point, eventPoint : paper.Point) : paper.Path
+    {
+        return new paper.Path.Rectangle(origin, new Size(eventPoint.x - origin.x, this.width));
+    }
 }
