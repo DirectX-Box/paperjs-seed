@@ -1,10 +1,8 @@
 import { DrawAdapterInterface } from "./adapters/DrawAdapterInterface";
 import { PlanObject } from "./PlanObject";
-import { PlanPoint } from "./PlanPoint";
-import { PlanShape } from "./PlanShape";
 
 // Gestionnaire des objets du plan.
-export class ObjectManager
+export class ObjectInstancesManager
 {
     // Système de dessin.
     private drawAdapter: DrawAdapterInterface;
@@ -59,7 +57,7 @@ export class ObjectManager
     // Retire un objet du gestionnaire.
     public removeObject( object : PlanObject ) : void
     {
-        for( var i = 0; i < this.count; i++ )
+        for( let i = 0; i < this.count; i++ )
         {
             if( this.objects[i] == object )
             {

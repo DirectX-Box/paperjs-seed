@@ -8,11 +8,15 @@ export class PlanShape
     // Le nombre de points dans cette figure.
     private count: number;
 
+    // Rayon du cercle dans le cas d'une figure à un point unique.
+    //private radius: number;
+
     // Constructeur vide. Les formes sont construites par itération.
     constructor()
     {
         this.mesh = [];
         this.count = 0;
+    //    this.radius = 0;
     }
 
     // Met à jour le nombre de points dans l'objet PlanShape.
@@ -54,5 +58,12 @@ export class PlanShape
     {
         this.mesh.splice( index, 1 );
         return this.updateCount();
+    }
+
+    // Efface la figure.
+    public clearShape()
+    {
+        this.mesh = []
+        this.count = 0
     }
 }

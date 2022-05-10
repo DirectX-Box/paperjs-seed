@@ -1,9 +1,6 @@
 import { DrawAdapterInterface } from "./DrawAdapterInterface";
 import { PlanObject } from "../PlanObject";
-import { PlanPoint } from "../PlanPoint";
-import { PlanShape } from "../PlanShape";
 import * as paper from "paper";
-import {Size} from "paper/dist/paper-core";
 
 class DrawAdapterPaperJS implements DrawAdapterInterface
 {
@@ -17,7 +14,7 @@ class DrawAdapterPaperJS implements DrawAdapterInterface
     // Efface l'objet passé en paramètre.
     public deleteObject( object: PlanObject ) : void
     {
-        var shape = this.paperShapes.get( object );
+        let shape = this.paperShapes.get( object );
         if( shape )
         {
             shape.remove();
@@ -29,9 +26,13 @@ class DrawAdapterPaperJS implements DrawAdapterInterface
     // Dessine l'objet passé en paramètre.
     public drawObject( object: PlanObject ) : void
     {
-        var shapeToDraw = object.getShape();
+        let shapeToDraw = object.getShape();
         switch( shapeToDraw.getCount() )
         {
+            case 1: {
+                this.drawPoint( object );
+                break;
+            }
             case 2: {
                 this.drawRectangle( object );
                 break;
@@ -39,14 +40,29 @@ class DrawAdapterPaperJS implements DrawAdapterInterface
         }
     }
 
+    private drawPoint( object: PlanObject ) : void
+    {
+        let origin = object.getShape().getPoints();
+        let shapeToDraw = new paper.Shape.Circle( origin );
+        let shape = this.paperShapes.get( object );
+        if( shape )
+        {
+            shape.replaceWith( shapeToDraw )
+        }
+        else
+        {
+            this.paperShapes.set( object, shapeToDraw );
+        }
+    }
+
     // Dessine un rectangle PaperJS.
     private drawRectangle( object: PlanObject ) : void
     {
-        var points = object.getShape().getPoints();
-        var p1 = new paper.Point( points[0].getX(), points[0].getY() );
-        var p2 = new paper.Point( points[1].getX(), points[1].getY() );
-        var shapeToDraw = new paper.Shape.Rectangle( p1, p2 )
-        var shape = this.paperShapes.get( object );
+        let points = object.getShape().getPoints();
+        let p1 = new paper.Point( points[0].getX(), points[0].getY() );
+        let p2 = new paper.Point( points[1].getX(), points[1].getY() );
+        let shapeToDraw = new paper.Shape.Rectangle( p1, p2 )
+        let shape = this.paperShapes.get( object );
         if( shape )
         {
             shape.replaceWith( shapeToDraw );

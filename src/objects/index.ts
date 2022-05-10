@@ -1,4 +1,4 @@
-export * from './buildObjects/BuildObject';
+/*export * from './buildObjects/BuildObject';
 export * from './buildObjects/wall';
 export * from './buildObjects/divider';
 
@@ -13,4 +13,4 @@ export * from './groundObjects/cashRegister';
 
 export * from './muralObjects/MuralObject';
 export * from './muralObjects/extinguisher';
-export * from './muralObjects/radiator';
+export * from './muralObjects/radiator';*/

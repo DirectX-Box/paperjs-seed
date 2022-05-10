@@ -1,12 +1,12 @@
 //import { project } from 'paper';
 import { Toolbox } from '../toolbox';
-import {BuildObject, Divider, Wall} from '../objects'
+//import {BuildObject, Divider, Wall} from '../objects'
 //import * as paper from 'paper';
 
 export class BuildObjectToolbox extends Toolbox {
     protected readonly title = 'Construction';
 
-    public buildObject : InstanceType< typeof BuildObject> | null = null;
+//    public buildObject : InstanceType< typeof BuildObject> | null = null;
 
     public constructor() {
         super();
@@ -18,7 +18,7 @@ export class BuildObjectToolbox extends Toolbox {
         const wallButtonElement = document.createElement('button');
 
         wallButtonElement.classList.add('btn');
-        wallButtonElement.appendChild(document.createTextNode(Wall.getNameBuildObject()));
+//        wallButtonElement.appendChild(document.createTextNode(Wall.getNameBuildObject()));
 
         wallButtonElement.addEventListener('click', () => this.drawWall());
 
@@ -27,7 +27,7 @@ export class BuildObjectToolbox extends Toolbox {
         const dividerButtonElement = document.createElement('button');
 
         dividerButtonElement.classList.add('btn');
-        dividerButtonElement.appendChild(document.createTextNode(Divider.getNameBuildObject()));
+//        dividerButtonElement.appendChild(document.createTextNode(Divider.getNameBuildObject()));
 
         dividerButtonElement.addEventListener('click', () => this.drawDivider());
 
@@ -37,10 +37,10 @@ export class BuildObjectToolbox extends Toolbox {
     }
 
     private drawWall(): void {
-        this.buildObject = new Wall(0,0,20,1,25);
+//        this.buildObject = new Wall(0,0,20,1,25);
     }
 
     private drawDivider(): void {
-        this.buildObject = new Divider(0,0,20,1,15);
+//        this.buildObject = new Divider(0,0,20,1,15);
     }
 }

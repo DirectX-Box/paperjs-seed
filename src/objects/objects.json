@@ -1,0 +1,62 @@
+{
+    "SchemaVersion": 1,
+
+    "categories": [
+        {
+            "name": "BuildObjects",
+            "objects": [
+                {
+                    "name": "Mur",
+                    "color": [ 96, 125, 139, 255 ]
+                },
+                {
+                    "name": "Cloison",
+                    "color": [ 158, 158, 158, 255 ]
+                }
+            ]
+        },
+        {
+            "name": "CeilingObjects",
+            "objects": [
+                {
+                    "name": "Ventilateur",
+                    "color": [ 255, 235, 59, 255 ]
+                },
+                {
+                    "name": "Lampe",
+                    "color": [ 255, 193, 7, 255 ]
+                }
+            ]
+        },
+        {
+            "name": "GroundObjects",
+            "objects": [
+                {
+                    "name": "Caisse",
+                    "color": [ 121, 85, 72, 255 ]
+                },
+                {
+                    "name": "Etagere",
+                    "color": [ 255, 87, 34, 255 ]
+                },
+                {
+                    "name": "Stand",
+                    "color": [ 255, 152, 0, 255 ]
+                }
+            ]
+        },
+        {
+            "name": "MuralObjects",
+            "objects": [
+                {
+                    "name": "Extincteur",
+                    "color": [ 139, 195, 74, 255 ]
+                },
+                {
+                    "name": "Radiateur",
+                    "color": [ 205, 220, 57, 255 ]
+                }
+            ]
+        }
+    ]
+}
