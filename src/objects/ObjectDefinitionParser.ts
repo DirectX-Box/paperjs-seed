@@ -10,36 +10,60 @@ export class ObjectDefinitionParser
     public static readonly SCHEMA_VERSION = 1;
 
     // Analyse le fichier de définitions passé en paramètre.
-    public static parse() : Map< ObjectCategory, Array< ObjectDefinition >
+    public static parse() : Map< ObjectCategory, Array< ObjectDefinition > >
     {
         if( definitions.SchemaVersion != ObjectDefinitionParser.SCHEMA_VERSION )
         {
             throw new RangeError( "Cannot read this schema. Expected " + ObjectDefinitionParser.SCHEMA_VERSION + ", got " + definitions.SchemaVersion );
         }
 
-        let res = new Map<ObjectCategory, ObjectDefinition >();
+        let res = new Map<ObjectCategory, Array< ObjectDefinition > >();
+        let dupObjects = new Map< string, Map< string, number > >();
 
         for( let jsonCategory of definitions.categories )
         {
-            let category;
+            let category = null;
+            let strObjMap = dupObjects.get( jsonCategory.name );
 
-            // Prise en charge des doublons.
-            for( let key of res.keys() )
+            if( strObjMap != null )
             {
-                if( key.getName() == jsonCategory.name )
+                for( let objCategory of res.keys() )
                 {
-                    category = key;
+                    if( objCategory.getName() == jsonCategory.name )
+                    {
+                        category = objCategory;
+                        break;
+                    }
                 }
             }
-            category = category ?? new ObjectCategory( jsonCategory.name );
-            let objects = new Array< ObjectDefinition >();
+            else
+            {
+                strObjMap = new Map< string, number >();
+            }
+
+            if( category == null )
+            {
+                category = new ObjectCategory( jsonCategory.name );
+            }
+
+            let objects = res.get( category ) ?? new Array< ObjectDefinition >();
+
             for( let object of jsonCategory.objects )
             {
+                // On ignore les objets doublons dans une même catégorie.
+                if( object.name == "" || strObjMap.get( object.name ) == 1 )
+                {
+                    continue;
+                }
                 let color = new PlanColor();
                 color.setValuesFromArray( object.color );
-                objects.push( new ObjectDefinition( object.name, category, color ) );
+                objects.push( new ObjectDefinition( object.name, object.shape, color ) );
+                strObjMap.set( object.name, 1 );
             }
-            
+
+            res.set( category, objects );
         }
+
+        return res;
     }
 }

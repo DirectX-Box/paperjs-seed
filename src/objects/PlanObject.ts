@@ -1,7 +1,7 @@
 import { PlanPoint } from "./PlanPoint";
 import { PlanShape } from "./PlanShape";
 
-export abstract class PlanObject {
+export class PlanObject {
 
     // Nom de l'objet
     private name: string;
@@ -43,7 +43,7 @@ export abstract class PlanObject {
     }
 
     // Retourne si l'objet peut être étendu.
-    public isExtendendable(): boolean
+    public isExtendable(): boolean
     {
         return this.canBeExtended;
     }

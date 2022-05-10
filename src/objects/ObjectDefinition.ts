@@ -1,4 +1,3 @@
-import { ObjectCategory } from "./ObjectCategory";
 import { PlanColor } from "./PlanColor";
 
 // Définition d'un objet.
@@ -7,16 +6,16 @@ export class ObjectDefinition
     // Nom de l'objet.
     private name: string;
 
-    // Catégorie de l'objet.
-    private category: ObjectCategory;
+    // Forme de l'objet.
+    private shape: string;
 
     // Couleur de l'objet.
     private color: PlanColor;
 
-    constructor( name: string, category: ObjectCategory, color: PlanColor )
+    constructor( name: string, shape: string, color: PlanColor )
     {
         this.name = name;
-        this.category = category;
+        this.shape = shape;
         this.color = color;
     }
 
@@ -25,9 +24,9 @@ export class ObjectDefinition
         return this.name;
     }
 
-    public getCategory() : ObjectCategory
+    public getShape() : string
     {
-        return this.category;
+        return this.shape;
     }
 
     public getColor() : PlanColor
@@ -40,9 +39,9 @@ export class ObjectDefinition
         this.name = name;
     }
 
-    public setCategory( category: ObjectCategory ) : void
+    public setShape( shape: string ) : void
     {
-        this.category = category;
+        this.shape = shape;
     }
 
     public setColor( color: PlanColor ) : void

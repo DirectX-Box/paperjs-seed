@@ -1,11 +1,14 @@
 import { DrawAdapterInterface } from "./DrawAdapterInterface";
 import { PlanObject } from "../PlanObject";
+import { PlanPoint } from "../PlanPoint";
 import * as paper from "paper";
 
 class DrawAdapterPaperJS implements DrawAdapterInterface
 {
+    // Stocke toutes les figures du plan.
     private paperShapes: Map< PlanObject, paper.Shape >;
 
+    // Constructeur de l'adaptateur.
     public constructor()
     {
         this.paperShapes = new Map([]);
@@ -30,7 +33,7 @@ class DrawAdapterPaperJS implements DrawAdapterInterface
         switch( shapeToDraw.getCount() )
         {
             case 1: {
-                this.drawPoint( object );
+                this.drawCircle( object );
                 break;
             }
             case 2: {
@@ -40,10 +43,11 @@ class DrawAdapterPaperJS implements DrawAdapterInterface
         }
     }
 
-    private drawPoint( object: PlanObject ) : void
+    // Dessine un cercle PaperJS.
+    private drawCircle( object: PlanObject ) : void
     {
-        let origin = object.getShape().getPoints();
-        let shapeToDraw = new paper.Shape.Circle( origin );
+        let origin = this.paperPointFromPlanPoint( object.getShape().getPoints()[0] );
+        let shapeToDraw = new paper.Shape.Circle( origin, object.getShape().getRadius() );
         let shape = this.paperShapes.get( object );
         if( shape )
         {
@@ -59,9 +63,9 @@ class DrawAdapterPaperJS implements DrawAdapterInterface
     private drawRectangle( object: PlanObject ) : void
     {
         let points = object.getShape().getPoints();
-        let p1 = new paper.Point( points[0].getX(), points[0].getY() );
-        let p2 = new paper.Point( points[1].getX(), points[1].getY() );
-        let shapeToDraw = new paper.Shape.Rectangle( p1, p2 )
+        let p1 = this.paperPointFromPlanPoint( points[0] );
+        let p2 = this.paperPointFromPlanPoint( points[1] );
+        let shapeToDraw = new paper.Shape.Rectangle( p1, p2 );
         let shape = this.paperShapes.get( object );
         if( shape )
         {
@@ -72,4 +76,9 @@ class DrawAdapterPaperJS implements DrawAdapterInterface
             this.paperShapes.set( object, shapeToDraw );
         }
     }
+
+    private paperPointFromPlanPoint( point: PlanPoint ) : paper.Point
+    {
+        return new paper.Point( point.getX(), point.getY() );
+    } 
 }

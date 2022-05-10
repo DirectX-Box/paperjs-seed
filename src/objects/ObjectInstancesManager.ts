@@ -1,9 +1,14 @@
 import { DrawAdapterInterface } from "./adapters/DrawAdapterInterface";
+import { ObjectDefinition } from "./ObjectDefinition";
 import { PlanObject } from "./PlanObject";
+import { PlanPoint } from "./PlanPoint";
 
 // Gestionnaire des objets du plan.
 export class ObjectInstancesManager
 {
+    // Instance.
+    private static instance : ObjectInstancesManager;
+
     // Système de dessin.
     private drawAdapter: DrawAdapterInterface;
 
@@ -14,11 +19,34 @@ export class ObjectInstancesManager
     private count: number;
 
     // Constructeur vide pour le gestionnaire.
-    constructor( drawAdapter: DrawAdapterInterface )
+    private constructor( drawAdapter: DrawAdapterInterface )
     {
         this.count = 0;
         this.drawAdapter = drawAdapter;
         this.objects = [];
+    }
+
+    public static init( adapter: DrawAdapterInterface ) : ObjectInstancesManager
+    {
+        if( !ObjectInstancesManager.instance )
+        {
+            ObjectInstancesManager.instance = new ObjectInstancesManager( adapter );
+            return ObjectInstancesManager.getInstance();
+        }
+        else
+        {
+            throw new Error( "ObjectInstanceManagers already initialized!" );
+        }
+    }
+
+    public static getInstance() : ObjectInstancesManager
+    {
+        if( !ObjectInstancesManager.instance )
+        {
+            throw new Error( "ObjectInstancesManager not initialized." );
+        }
+
+        return ObjectInstancesManager.instance;
     }
 
     // Retourne le nombre d'objets dans le gestionnaire.
@@ -32,6 +60,13 @@ export class ObjectInstancesManager
     {
         this.count = this.objects.length;
         return this.getCount();
+    }
+
+    public createObjectFromDefinition( objectDef: ObjectDefinition, position: PlanPoint ) : PlanObject
+    {
+        let obj = new PlanObject( objectDef.getName(), position, true )
+        this.addObject( obj );
+        return obj;
     }
 
     // Demande un dessin au système correspondant.

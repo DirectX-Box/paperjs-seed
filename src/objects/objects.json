@@ -7,10 +7,12 @@
             "objects": [
                 {
                     "name": "Mur",
+                    "shape": "rectangle",
                     "color": [ 96, 125, 139, 255 ]
                 },
                 {
                     "name": "Cloison",
+                    "shape": "rectangle",
                     "color": [ 158, 158, 158, 255 ]
                 }
             ]
@@ -20,10 +22,12 @@
             "objects": [
                 {
                     "name": "Ventilateur",
+                    "shape": "circle",
                     "color": [ 255, 235, 59, 255 ]
                 },
                 {
                     "name": "Lampe",
+                    "shape": "circle",
                     "color": [ 255, 193, 7, 255 ]
                 }
             ]
@@ -33,14 +37,17 @@
             "objects": [
                 {
                     "name": "Caisse",
+                    "shape": "rectangle",
                     "color": [ 121, 85, 72, 255 ]
                 },
                 {
                     "name": "Etagere",
+                    "shape": "rectangle",
                     "color": [ 255, 87, 34, 255 ]
                 },
                 {
                     "name": "Stand",
+                    "shape": "rectangle",
                     "color": [ 255, 152, 0, 255 ]
                 }
             ]
@@ -50,10 +57,12 @@
             "objects": [
                 {
                     "name": "Extincteur",
+                    "shape": "circle",
                     "color": [ 139, 195, 74, 255 ]
                 },
                 {
                     "name": "Radiateur",
+                    "shape": "rectangle",
                     "color": [ 205, 220, 57, 255 ]
                 }
             ]

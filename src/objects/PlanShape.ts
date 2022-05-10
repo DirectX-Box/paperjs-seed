@@ -9,14 +9,14 @@ export class PlanShape
     private count: number;
 
     // Rayon du cercle dans le cas d'une figure à un point unique.
-    //private radius: number;
+    private radius: number;
 
     // Constructeur vide. Les formes sont construites par itération.
     constructor()
     {
         this.mesh = [];
         this.count = 0;
-    //    this.radius = 0;
+        this.radius = 0;
     }
 
     // Met à jour le nombre de points dans l'objet PlanShape.
@@ -37,6 +37,11 @@ export class PlanShape
     {
         const constMesh = [ ... this.mesh ]; // Copie de this.mesh dans constMesh.
         return constMesh;
+    }
+
+    public getRadius() : number
+    {
+        return this.radius;
     }
 
     // Ajoute un point à la figure.
