@@ -2,10 +2,9 @@ import * as paper from 'paper';
 import { Plan } from '../plan';
 import { Toolbar } from '../toolbar';
 import { ToolboxesContainer } from '../toolbox';
-import { ColorToolbox, SaveToolbox, BuildObjectToolbox, CeilingObjectToolbox, GroundObjectToolbox, MuralObjectToolbox } from '../toolboxes';
+import { ColorToolbox, SaveToolbox } from '../toolboxes';
 import { FillTool } from '../tools';
 import './app.scss';
-import { ObjectDefinitionParser } from '../objects/ObjectDefinitionParser';
 
 export class App {
     public static create(host: HTMLElement): App {
@@ -30,19 +29,17 @@ export class App {
         toolbar.addTool(new GroundObjectTool(groundObjectToolbox));
         toolbar.addTool(new MuralObjectTool(muralObjectToolbox));*/
 
-        ObjectDefinitionParser.parse();
-
-        this.initializePlan();
+        this.initializePlan( toolboxes, toolbar );
     }
 
-    private initializePlan(): void {
+    private initializePlan( toolboxes : ToolboxesContainer, toolbar: Toolbar ): void {
         const canvas = document.createElement('canvas');
         this.element.appendChild(canvas);
 
         paper.setup(canvas);
 
-        const plan = new Plan();
+        const plan = Plan.getInstance();
 
-        plan.initialize();
+        plan.initialize( toolboxes, toolbar );
     }
 }

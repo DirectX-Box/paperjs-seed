@@ -1,41 +1,29 @@
 import { icon } from "@fortawesome/fontawesome-svg-core";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
-import { ObjectDefinition } from "../objects/ObjectDefinition";
-import { PlanColor } from "../objects/PlanColor";
-import { PlanObject } from "../objects/PlanObject";
-import { PlanPoint } from "../objects/PlanPoint";
 import { PaperTool } from "../toolbar";
-import { BuildObjectToolbox } from "../toolboxes";
 import * as paper from "paper";
-import { ObjectInstancesManager } from "../objects/ObjectInstancesManager";
+import { Plan } from "../plan";
+import { ObjectToolbox } from "../toolboxes/object-toolbox";
 
 export class ObjectTool extends PaperTool
 {
-    public readonly name = "Construction";
+    public readonly name;
 
     public readonly icon = icon(faHouse);
 
-    private currentObj : ObjectDefinition;
-
-    private isInitialized : boolean;
+    private plan : Plan;
 
     public initPos : InstanceType< typeof paper.Point > | null = null;
 
-    constructor( private readonly objToolBox: BuildObjectToolbox )
+    constructor( name: string, private readonly objToolBox: ObjectToolbox )
     {
         super();
-        this.isInitialized = false;
-        this.currentObj = new ObjectDefinition( "", "", new PlanColor() );
+        this.name = name;
+        this.plan = Plan.getInstance();
 
         this.paperTool.onMouseDown = this.onMouseDown.bind( this );
         this.paperTool.onMouseDrag = this.onMouseDrag.bind( this );
         this.paperTool.onMouseUp = this.onMouseUp.bind( this );
-    }
-
-    public setObjectDefinition( objectDef: ObjectDefinition ) : void
-    {
-        this.currentObj = objectDef;
-        this.isInitialized = true;
     }
 
     public enable(): void {
@@ -52,38 +40,31 @@ export class ObjectTool extends PaperTool
 
     public onMouseDown( event: paper.ToolEvent ): void {
 
-        if( this.isInitialized )
-        {
-            const hit = paper.project.activeLayer.hitTest(event.downPoint);
+        const hit = paper.project.activeLayer.hitTest(event.downPoint);
 
-            if ( hit == null || hit.item == null ) {
-                this.initPos = event.point;
-                let origin = new PlanPoint( this.initPos.x, this.initPos.y );
+        if ( hit == null || hit.item == null ) {
+            this.initPos = event.point;
 
-                /*this.buildObject = this.buildObjectToolbox.buildObject;
-                this.objectShape = this.buildObject!.createShape(this.initPos);
-                this.objectShape.fillColor = this.buildObject!.getColor();
-                this.objectShape.selected = true;*/
+            this.plan.createObject( this.objToolBox.getCurrentObject(), event.point );
 
-                ObjectInstancesManager.getInstance().createObjectFromDefinition(
-                    this.currentObj, origin
-                );
-            }
+            /*this.buildObject = this.buildObjectToolbox.buildObject;
+            this.currentObjShape = this.buildObject!.createShape(this.initPos);
+            this.currentObjShape.fillColor = this.buildObject!.getColor();
+            this.currentObjShape.selected = true;*/
+                
         }
 
     }
 
     public onMouseDrag( event: paper.ToolEvent ): void {
 
-        if ( this.isInitialized ) {
-            // const pos = paper.project.activeLayer.hitTest(event.point);
-
-            if ( this.initPos != null ) {
-                /*this.objectShape?.remove();
-                this.objectShape = this.buildObject!.updateShape(this.initPos, event.point);
-                this.objectShape.fillColor = this.buildObject!.getColor();
-                this.objectShape.selected = true;*/
-            }
+        if ( this.initPos != null ) {
+            const temp = event;
+            temp?.point.x;
+            /*this.currentObjShape?.remove();
+            this.currentObjShape = this.buildObject!.updateShape(this.initPos, event.point);
+            this.currentObjShape.fillColor = this.buildObject!.getColor();
+            this.currentObjShape.selected = true;*/
         }
     }
 

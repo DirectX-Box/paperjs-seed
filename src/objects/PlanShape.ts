@@ -11,12 +11,16 @@ export class PlanShape
     // Rayon du cercle dans le cas d'une figure à un point unique.
     private radius: number;
 
+    // Type de figure.
+    private type: string;
+
     // Constructeur vide. Les formes sont construites par itération.
     constructor()
     {
         this.mesh = [];
         this.count = 0;
         this.radius = 0;
+        this.type = "";
     }
 
     // Met à jour le nombre de points dans l'objet PlanShape.
@@ -39,9 +43,28 @@ export class PlanShape
         return constMesh;
     }
 
+    // Retourne le rayon de la figure (uniquement utile pour un cercle).
     public getRadius() : number
     {
         return this.radius;
+    }
+
+    // Retourne le type de la figure.
+    public getType() : string
+    {
+        return this.type;
+    }
+
+    // Fixe le rayon de la figure (uniquement utile pour un cercle).
+    public setRadius( radius: number ) : void
+    {
+        this.radius = radius;
+    }
+
+    // Fixe le type de la figure.
+    public setType( type: string ) : void
+    {
+        this.type = type;
     }
 
     // Ajoute un point à la figure.

@@ -2,6 +2,7 @@ import definitions from "./objects.json";
 import { ObjectCategory } from "./ObjectCategory";
 import { PlanColor } from "./PlanColor";
 import { ObjectDefinition } from "./ObjectDefinition";
+import { PlanPoint } from "./PlanPoint";
 //import { ObjectDefinition } from "./ObjectDefinition";
 
 // Analyseur de définitions.
@@ -51,13 +52,24 @@ export class ObjectDefinitionParser
             for( let object of jsonCategory.objects )
             {
                 // On ignore les objets doublons dans une même catégorie.
-                if( object.name == "" || strObjMap.get( object.name ) == 1 )
+                if( !object.name || strObjMap.get( object.name ) == 1 )
                 {
                     continue;
                 }
                 let color = new PlanColor();
                 color.setValuesFromArray( object.color );
-                objects.push( new ObjectDefinition( object.name, object.shape, color ) );
+
+                let radius = object.radius ?? 0;
+                let points = Array< PlanPoint >();
+                if( object.shape )
+                {
+                    for( let point of object.shape )
+                    {
+                        points.push( new PlanPoint( point[0], point[1] ) );
+                    }
+                }
+
+                objects.push( new ObjectDefinition( object.name, radius, points, object.type ?? "", color ) );
                 strObjMap.set( object.name, 1 );
             }
 

@@ -1,3 +1,4 @@
+import { PlanColor } from "./PlanColor";
 import { PlanPoint } from "./PlanPoint";
 import { PlanShape } from "./PlanShape";
 
@@ -5,6 +6,9 @@ export class PlanObject {
 
     // Nom de l'objet
     private name: string;
+
+    // Couleur de l'objet.
+    private color: PlanColor;
 
     // Point d'origine de l'objet
     private origin: PlanPoint;
@@ -16,18 +20,25 @@ export class PlanObject {
     private shape: PlanShape;
 
     // Constructeur.
-    constructor( name: string, origin: PlanPoint, canBeExtended: boolean )
+    constructor( name: string, color: PlanColor, origin: PlanPoint, shape: PlanShape, canBeExtended: boolean )
     {
         this.name = name;
+        this.color = color;
         this.origin = origin;
         this.canBeExtended = canBeExtended;
-        this.shape = new PlanShape();
+        this.shape = shape;
     }
 
     // Retourne le nom de l'objet.
     public getName() : string
     {
         return this.name;
+    }
+
+    // Retourne la couleur de l'objet.
+    public getColor() : PlanColor
+    {
+        return this.color;
     }
 
     // Retourne l'origine de cet objet.
@@ -46,6 +57,18 @@ export class PlanObject {
     public isExtendable(): boolean
     {
         return this.canBeExtended;
+    }
+
+    // Fixe la couleur de l'objet.
+    public setColor( color: PlanColor ) : void
+    {
+        this.color = color;
+    }
+
+    // Fixe la position de l'objet.
+    public setOrigin( point: PlanPoint ) : void
+    {
+        this.origin = point;
     }
 
 }
