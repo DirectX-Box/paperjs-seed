@@ -3,6 +3,7 @@ import { Plan } from '../plan';
 import { Toolbar } from '../toolbar';
 import { ToolboxesContainer } from '../toolbox';
 import './app.scss';
+import {SaveToolbox} from "../toolboxes";
 
 export class App {
     public static create(host: HTMLElement): App {
@@ -15,6 +16,7 @@ export class App {
 
         const toolbar   = Toolbar.create( element );
         const toolboxes = ToolboxesContainer.create( element );
+        toolboxes.addToolbox(new SaveToolbox());
 
         /*
         const colorToolbox = new ColorToolbox();
