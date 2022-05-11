@@ -7,6 +7,9 @@ export class ObjectDefinition
     // Nom de l'objet.
     private name: string;
 
+    // Capacité de l'objet à être déplacé (les murs sont fixes).
+    private permanent: boolean;
+
     // Rayon de l'objet.
     private radius: number;
 
@@ -20,9 +23,10 @@ export class ObjectDefinition
     private color: PlanColor;
 
     // Constructeur.
-    constructor( name: string, radius: number, shape: Array< PlanPoint >, type: string, color: PlanColor = new PlanColor() )
+    constructor( name: string, permanent: boolean, radius: number, shape: Array< PlanPoint >, type: string, color: PlanColor = new PlanColor() )
     {
         this.name = name;
+        this.permanent = permanent;
         this.radius = radius;
         this.shape = shape;
         this.type = type;
@@ -59,6 +63,12 @@ export class ObjectDefinition
         return this.color;
     }
 
+    // Retourne si cet objet est amovible ou non.
+    public isPermanent() : boolean
+    {
+        return this.permanent;
+    }
+
     // Fixe le nom de l'objet.
     public setName( name: string ) : void
     {
@@ -87,5 +97,11 @@ export class ObjectDefinition
     public setColor( color: PlanColor ) : void
     {
         this.color = color;
+    }
+
+    // Fixe si cet objet est permanent ou non.
+    public setIfPermanent( permanent: boolean )
+    {
+        this.permanent = permanent;
     }
 }

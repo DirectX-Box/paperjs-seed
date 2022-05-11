@@ -31,7 +31,7 @@ export class ObjectInstancesManager
     {
         this.builder = ObjectBuilder.getInstance();
         this.count = 0;
-        this.currentId = 0;
+        this.currentId = 1; // Démarre à 1 car 0 n'est pas reconnu dans les Maps.
         this.drawAdapter = drawAdapter;
         this.objects = new Map();
     }
@@ -82,6 +82,11 @@ export class ObjectInstancesManager
         return obj;
     }
 
+    public clearSelection() : void
+    {
+        this.drawAdapter.clearSelection();
+    }
+
     // Crée un nouvel objet et l'ajoute au gestionnaire.
     public createObjectFromDefinition( objectDef: ObjectDefinition, position: PlanPoint ) : number
     {
@@ -117,6 +122,16 @@ export class ObjectInstancesManager
             throw new Error( "Object " + objectId + " does not exist." )
         }
         this.drawAdapter.drawObject( obj );
+    }
+
+    // Sélectionne un objet.
+    public selectObject( objectId: number ) : void
+    {
+        let obj = this.objects.get( objectId );
+        if( !obj )
+            return;
+
+        this.drawAdapter.selectObject( obj );
     }
 
     // Retourne les définitions du générateur.

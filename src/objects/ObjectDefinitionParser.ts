@@ -69,7 +69,7 @@ export class ObjectDefinitionParser
                     }
                 }
 
-                objects.push( new ObjectDefinition( object.name, radius, points, object.type ?? "", color ) );
+                objects.push( new ObjectDefinition( object.name, object.permanent ?? false, radius, points, object.type ?? "", color ) );
                 strObjMap.set( object.name, 1 );
             }
 

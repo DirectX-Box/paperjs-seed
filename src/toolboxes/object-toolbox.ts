@@ -13,7 +13,7 @@ export class ObjectToolbox extends Toolbox
     public constructor( title: string, objects: Array< ObjectDefinition > )
     {
         super();
-        this.currentObj = new ObjectDefinition( "", 0, [], "" );
+        this.currentObj = new ObjectDefinition( "", false, 0, [], "" );
         this.objects = objects;
         this.title = title;
     }

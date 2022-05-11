@@ -17,7 +17,12 @@ export class DrawAdapterPaperJS implements DrawAdapterInterface
     public constructor()
     {
         this.paperPaths = new Map();
-        this.selectedPath = new paper.Path([0,0]);
+        this.selectedPath = {} as paper.Path;
+    }
+
+    public clearSelection() : void
+    {
+        this.selectedPath.selected = false;
     }
 
     // Efface l'objet passé en paramètre.
@@ -48,6 +53,16 @@ export class DrawAdapterPaperJS implements DrawAdapterInterface
                 break;
             }
         }
+    }
+
+    // Sélectionne l'objet passé en paramètre.
+    public selectObject( object: PlanObject ) : void
+    {
+        let path = this.paperPaths.get( object );
+        if( !path )
+            return;
+        
+        this.selectPath( path );
     }
 
     // Dessine un cercle PaperJS.
@@ -116,6 +131,7 @@ export class DrawAdapterPaperJS implements DrawAdapterInterface
         return new paper.Point( point.getX(), point.getY() );
     }
 
+    // Sélectionne la figure passée en paramètre.
     private selectPath( path: paper.Path ) : void
     {
         this.selectedPath.selected = false;

@@ -2,8 +2,6 @@ import * as paper from 'paper';
 import { Plan } from '../plan';
 import { Toolbar } from '../toolbar';
 import { ToolboxesContainer } from '../toolbox';
-import { ColorToolbox, SaveToolbox } from '../toolboxes';
-import { FillTool } from '../tools';
 import './app.scss';
 
 export class App {
@@ -14,6 +12,11 @@ export class App {
     }
 
     private constructor(private readonly element: HTMLElement) {
+
+        const toolbar   = Toolbar.create( element );
+        const toolboxes = ToolboxesContainer.create( element );
+
+        /*
         const colorToolbox = new ColorToolbox();
 
         const toolboxes = ToolboxesContainer.create(element);
@@ -24,10 +27,11 @@ export class App {
         const toolbar = Toolbar.create(element);
 
         toolbar.addTool(new FillTool(colorToolbox));
-/*        toolbar.addTool(new WallTool(buildObjectToolbox));
+        toolbar.addTool(new WallTool(buildObjectToolbox));
         toolbar.addTool(new CeilingObjectTool(ceilingObjectToolbox));
         toolbar.addTool(new GroundObjectTool(groundObjectToolbox));
-        toolbar.addTool(new MuralObjectTool(muralObjectToolbox));*/
+        toolbar.addTool(new MuralObjectTool(muralObjectToolbox));
+        */
 
         this.initializePlan( toolboxes, toolbar );
     }

@@ -14,18 +14,18 @@ export class PlanObject {
     private origin: PlanPoint;
 
     // True si la taille peut être modifié
-    private canBeExtended: boolean;
+    private permanent: boolean;
 
     // Figure pour cet objet.
     private shape: PlanShape;
 
     // Constructeur.
-    constructor( name: string, color: PlanColor, origin: PlanPoint, shape: PlanShape, canBeExtended: boolean )
+    constructor( name: string, color: PlanColor, origin: PlanPoint, shape: PlanShape, permanent: boolean )
     {
         this.name = name;
         this.color = color;
         this.origin = origin;
-        this.canBeExtended = canBeExtended;
+        this.permanent = permanent;
         this.shape = shape;
     }
 
@@ -54,9 +54,9 @@ export class PlanObject {
     }
 
     // Retourne si l'objet peut être étendu.
-    public isExtendable(): boolean
+    public isPermanent(): boolean
     {
-        return this.canBeExtended;
+        return this.permanent;
     }
 
     // Fixe la couleur de l'objet.
