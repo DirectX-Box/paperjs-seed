@@ -28,4 +28,8 @@ export class MoveFurnitureAction extends Action {
                                   this.prevPosX, this.prevPosY);
   }
 
+  public execute(): void {
+    // TODO
+  }
+
 }

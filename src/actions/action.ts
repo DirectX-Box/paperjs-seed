@@ -5,6 +5,8 @@ export abstract class Action {
 
   public abstract reverse(): Action;
 
+  public abstract execute(): void;
+
   public getName(): string {
     return this.name || "";
   }

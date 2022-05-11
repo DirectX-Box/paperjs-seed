@@ -7,11 +7,8 @@ import './action-stack-toolbox.scss';
 export class UndoToolbox extends Toolbox {
     protected readonly title = 'Annuler';
 
-    protected action_stack: ActionStack;
-
-    public constructor(public actionStack: ActionStack) {
+    public constructor() {
         super();
-        this.action_stack = actionStack;
     }
 
     private actionList?: HTMLDivElement;
@@ -31,16 +28,19 @@ export class UndoToolbox extends Toolbox {
     }*/
 
     public listActions(): void {
-      if (this.action_stack == undefined) {
+      /*if (this.action_stack == undefined) {
         console.log("action_stack undefined")
         return;// document.createElement("div");
-      }
+      }*/
 
       if (this.actionList != undefined) {
         this.actionList.innerHTML = "";
       }
 
-      let list: string[] = this.action_stack.getUndoNamesList();
+      let action_stack = ActionStack.getInstance();
+
+      //let list: string[] = this.action_stack.getUndoNamesList();
+      let list: string[] = action_stack.getUndoNamesList();
       //let list: string[] = this.getActionNamesExample();
       console.log("List:", list)
 
@@ -50,12 +50,12 @@ export class UndoToolbox extends Toolbox {
         let text_node = document.createTextNode(list[name])
         item.addEventListener('click', async (event) => {
           console.log('Clicked on ', name, list[name], "(", event, ")");
-          await this.action_stack.undo(Number(name));
+          await action_stack.undo(Number(name));
           this.listActions();
           if (this.redo_toolbox) {
             this.redo_toolbox.listActions()
           }
-          console.log("Undo: ", this.action_stack.getUndoNamesList())
+          console.log("Undo: ", action_stack.getUndoNamesList())
         });
         item.appendChild(text_node);
 

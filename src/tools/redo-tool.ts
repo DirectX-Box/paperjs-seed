@@ -18,6 +18,7 @@ export class RedoTool extends PaperTool {
     public enable(): void {
         super.enable();
 
+        this.redoToolbox.listActions();
         this.redoToolbox.visible = true;
     }
 

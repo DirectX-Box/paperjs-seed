@@ -18,6 +18,7 @@ export class UndoTool extends PaperTool {
     public enable(): void {
         super.enable();
 
+        this.undoToolbox.listActions();
         this.undoToolbox.visible = true;
     }
 

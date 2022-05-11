@@ -50,4 +50,8 @@ export class RedimensionFurnitureAction extends Action {
                                   this.prevPosX2, this.prevPosY2)
   }
 
+  public execute(): void {
+    // TODO
+  }
+
 }

@@ -11,4 +11,8 @@ export class NullAction extends Action {
     return new NullAction();
   }
 
+  public execute(): void {
+    
+  }
+
 }
