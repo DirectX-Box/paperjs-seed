@@ -11,6 +11,8 @@ export class ObjectTool extends PaperTool
 
     public readonly icon = icon(faHouse);
 
+    private lastPath : paper.Path;
+
     private plan : Plan;
 
     public initPos : InstanceType< typeof paper.Point > | null = null;
@@ -18,6 +20,7 @@ export class ObjectTool extends PaperTool
     constructor( name: string, private readonly objToolBox: ObjectToolbox )
     {
         super();
+        this.lastPath = {} as paper.Path;
         this.name = name;
         this.plan = Plan.getInstance();
 
@@ -47,6 +50,8 @@ export class ObjectTool extends PaperTool
 
             this.plan.createObject( this.objToolBox.getCurrentObject(), event.point );
 
+            this.lastPath = this.plan.getLastPath();
+
             /*this.buildObject = this.buildObjectToolbox.buildObject;
             this.currentObjShape = this.buildObject!.createShape(this.initPos);
             this.currentObjShape.fillColor = this.buildObject!.getColor();
@@ -59,8 +64,9 @@ export class ObjectTool extends PaperTool
     public onMouseDrag( event: paper.ToolEvent ): void {
 
         if ( this.initPos != null ) {
-            const temp = event;
-            temp?.point.x;
+            
+            this.plan.resizeObject( this.lastPath, this.initPos, event.point, true );
+
             /*this.currentObjShape?.remove();
             this.currentObjShape = this.buildObject!.updateShape(this.initPos, event.point);
             this.currentObjShape.fillColor = this.buildObject!.getColor();

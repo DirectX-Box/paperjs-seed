@@ -58,24 +58,56 @@ export class Plan {
     }
 
     // Crée un nouvel objet.
-    public createObject( objDef : ObjectDefinition, point: paper.Point ) : void
+    public createObject( objDef : ObjectDefinition, point: paper.Point ) : number
     {
         let planpoint = this.planPointFromPaperPoint( point );
         let id = this.manager.createObjectFromDefinition( objDef, planpoint );
         this.manager.drawObject( id );
-        let createdPath = paper.project.activeLayer.children.at( -1 );
+        let createdPath = this.getLastPath();
         if( !createdPath )
         {
             throw new Error( "Could not get created path." );
         }
         this.paths.set( createdPath as paper.Path , id );
+        return id;
     }
 
+    // Libère toute figure sélectionnée.
     public clearSelection() : void
     {
         this.manager.clearSelection();
     }
 
+    // Redimensionne l'objet.
+    public resizeObject( path: paper.Path, origin: paper.Point, mouse: paper.Point, isInitial: boolean = false ) : paper.Point
+    {
+        let id = this.paths.get( path );
+        if( !id )
+        {
+            throw new Error( "Unknown object." );
+        }
+
+        path.scale( mouse.x / origin.x, mouse.y / origin.y );
+
+        let newPos = path.bounds.topLeft;
+
+        let obj = this.manager.getObject( id );
+        if( !obj.isPermanent() || ( obj.isPermanent() && isInitial ) )
+        {
+            let objPath = obj.getShape();
+            obj.setOrigin( this.planPointFromPaperPoint( path.bounds.topLeft ) );
+            objPath.clearShape();
+            for( let segment of path.segments )
+            {
+                objPath.addPoint( this.planPointFromPaperPoint( segment.point ) );
+            }
+            // this.manager.drawObject( id );
+        }
+
+        return newPos;
+    }
+
+    // Sélectionne l'objet.
     public selectObject( path: paper.Path ) : void
     {
         let id = this.paths.get( path );
@@ -86,7 +118,8 @@ export class Plan {
         this.manager.selectObject( id );
     }
 
-    public updateObject( path: paper.Path ) : void
+    // Met à jour l'objet.
+    public updateObject( path: paper.Path, isInitial: boolean = false ) : void
     {
         let id = this.paths.get( path );
         if( !id )
@@ -95,7 +128,7 @@ export class Plan {
         }
 
         let obj = this.manager.getObject( id );
-        if( !obj.isPermanent() )
+        if( !obj.isPermanent() || ( obj.isPermanent() && isInitial ) )
         {
             let objPath = obj.getShape();
             obj.setOrigin( this.planPointFromPaperPoint( path.position ) );
@@ -112,5 +145,11 @@ export class Plan {
     private planPointFromPaperPoint( point: paper.Point ) : PlanPoint
     {
         return new PlanPoint( point.x, point.y );
+    }
+
+    // Retourne la dernière instance Path créée.
+    public getLastPath() : paper.Path
+    {
+        return paper.project.activeLayer.children.at( -1 ) as paper.Path;
     }
 }
