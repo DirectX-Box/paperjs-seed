@@ -3,8 +3,8 @@ import { Plan } from '../plan';
 import { Toolbar } from '../toolbar';
 import { ToolboxesContainer } from '../toolbox';
 import { Messagebox } from '../messagebox';
-import { ColorToolbox, SaveToolbox, UndoToolbox, RedoToolbox, SaveToolbox } from '../toolboxes';
-import { FillTool, UndoTool, RedoTool } from '../tools';
+import { SaveToolbox, UndoToolbox, RedoToolbox } from '../toolboxes';
+import { UndoTool, RedoTool } from '../tools';
 import { ActionStack } from '../actions';
 import './app.scss';
 
@@ -32,8 +32,6 @@ export class App {
         toolboxes.addToolbox(undoToolbox);
         toolboxes.addToolbox(redoToolbox);
 
-
-        const toolbar = Toolbar.create(element);
         toolbar.addTool(new UndoTool(undoToolbox));
         toolbar.addTool(new RedoTool(redoToolbox));
 
