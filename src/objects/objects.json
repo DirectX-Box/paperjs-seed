@@ -1,0 +1,89 @@
+{
+    "SchemaVersion": 1,
+
+    "categories": [
+        {
+            "name": "BuildObjects",
+            "objects": [
+                {
+                    "name": "Mur",
+                    "permanent": true,
+                    "shape": [ [ 0, 0 ], [ 10, 0 ], [ 10, 10 ], [ 0, 10 ] ],
+                    "type": "brush",
+                    "color": [ 96, 125, 139, 255 ]
+                },
+                {
+                    "name": "Cloison",
+                    "permanent": false,
+                    "shape": [ [ 0, 0 ], [ 10, 0 ], [ 10, 10 ], [ 0, 10 ] ],
+                    "type": "brush",
+                    "color": [ 158, 158, 158, 255 ]
+                }
+            ]
+        },
+        {
+            "name": "CeilingObjects",
+            "objects": [
+                {
+                    "name": "Ventilateur",
+                    "permanent": false,
+                    "radius": 60,
+                    "type": "circle",
+                    "color": [ 255, 235, 59, 255 ]
+                },
+                {
+                    "name": "Lampe",
+                    "permanent": false,
+                    "radius": 30,
+                    "type": "circle",
+                    "color": [ 255, 193, 7, 255 ]
+                }
+            ]
+        },
+        {
+            "name": "GroundObjects",
+            "objects": [
+                {
+                    "name": "Caisse",
+                    "permanent": false,
+                    "shape": [ [ 0, 0 ], [ 10, 0 ], [ 10, 10 ], [ 0, 10 ] ],
+                    "type": "brush",
+                    "color": [ 121, 85, 72, 255 ]
+                },
+                {
+                    "name": "Etagere",
+                    "permanent": false,
+                    "shape": [ [ 0, 0 ], [ 10, 0 ], [ 10, 10 ], [ 0, 10 ] ],
+                    "type": "brush",
+                    "color": [ 255, 87, 34, 255 ]
+                },
+                {
+                    "name": "Stand",
+                    "permanent": false,
+                    "shape": [ [ 0, 0 ], [ 10, 0 ], [ 10, 10 ], [ 0, 10 ] ],
+                    "type": "brush",
+                    "color": [ 255, 152, 0, 255 ]
+                }
+            ]
+        },
+        {
+            "name": "MuralObjects",
+            "objects": [
+                {
+                    "name": "Extincteur",
+                    "permanent": false,
+                    "radius": 5,
+                    "type": "circle",
+                    "color": [ 139, 195, 74, 255 ]
+                },
+                {
+                    "name": "Radiateur",
+                    "permanent": false,
+                    "shape": [ [ 0, 0 ], [ 10, 0 ], [ 10, 10 ], [ 0, 10 ] ],
+                    "type": "brush",
+                    "color": [ 205, 220, 57, 255 ]
+                }
+            ]
+        }
+    ]
+}
