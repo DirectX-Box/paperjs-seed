@@ -4,6 +4,7 @@ import { PaperTool } from "../toolbar";
 import * as paper from "paper";
 import { Plan } from "../plan";
 import { ObjectToolbox } from "../toolboxes/object-toolbox";
+import { Rectangle } from "paper/dist/paper-core";
 
 export class ObjectTool extends PaperTool
 {
@@ -14,8 +15,6 @@ export class ObjectTool extends PaperTool
     private lastPath : paper.Path;
 
     private plan : Plan;
-
-    private initPos : InstanceType< typeof paper.Point > | null = null;
 
     constructor( name: string, private readonly objToolBox: ObjectToolbox )
     {
@@ -46,9 +45,8 @@ export class ObjectTool extends PaperTool
         const hit = paper.project.activeLayer.hitTest(event.downPoint);
 
         if ( hit == null || hit.item == null ) {
-            this.initPos = event.point;
 
-            this.plan.createObject( this.objToolBox.getCurrentObject(), event.point );
+            this.plan.createObject( this.objToolBox.getCurrentObject(), event.downPoint );
 
             this.lastPath = this.plan.getLastPath();
 
@@ -63,22 +61,24 @@ export class ObjectTool extends PaperTool
 
     public onMouseDrag( event: paper.ToolEvent ): void {
 
-        if ( this.initPos != null ) {
+        // console.log( this.initPos + " " + event.point );
 
-            console.log( this.initPos + " " + event.point );
-            this.lastPath.bounds = new paper.Rectangle( this.initPos, event.point );
+        // this.plan.resizePath( this.lastPath, event.downPoint, event.point, true );
+        this.lastPath.bounds = new Rectangle( event.downPoint, event.point );
 
-            // this.initPos = this.plan.resizeObject( this.lastPath, this.initPos, event.point, true );
+        // Keeps aspect ratio, so not what we want.
+        // this.lastPath.fitBounds( new paper.Rectangle( this.initPos, event.point ), true );
 
-            /*this.currentObjShape?.remove();
-            this.currentObjShape = this.buildObject!.updateShape(this.initPos, event.point);
-            this.currentObjShape.fillColor = this.buildObject!.getColor();
-            this.currentObjShape.selected = true;*/
-        }
+        // this.initPos = this.plan.resizeObject( this.lastPath, this.initPos, event.point, true );
+
+        /*this.currentObjShape?.remove();
+        this.currentObjShape = this.buildObject!.updateShape(this.initPos, event.point);
+        this.currentObjShape.fillColor = this.buildObject!.getColor();
+        this.currentObjShape.selected = true;*/
+
     }
 
     public onMouseUp(): void {
-
         this.plan.updateObject( this.lastPath );
     }
 }
