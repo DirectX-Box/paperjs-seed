@@ -10,11 +10,14 @@ export class SelectTool extends PaperTool
 
     public readonly icon = icon( faFillDrip );
 
+    private multiSelection : boolean;
+
     private plan : Plan;
 
     constructor()
     {
         super();
+        this.multiSelection = false;
         this.plan = Plan.getInstance();
 
         this.paperTool.onKeyDown = this.onKeyDown.bind( this );
@@ -32,9 +35,17 @@ export class SelectTool extends PaperTool
 
     public onKeyDown( event: paper.KeyEvent ) : void
     {
-        if( event.key == "delete" )
+        switch( event.key )
         {
-            this.plan.deleteSelectedObjects();
+            case "control": {
+                this.multiSelection = true;
+                break;
+            }
+
+            case "delete": {
+                this.plan.deleteSelectedObjects();
+                break;
+            }
         }
     }
 
@@ -52,7 +63,15 @@ export class SelectTool extends PaperTool
                 return;
             }
 
-            this.plan.selectObject( path );
+            if( this.multiSelection )
+            {
+                this.plan.toggleSelection( path );
+            }
+            else
+            {
+                this.plan.clearSelection();
+                this.plan.selectObject( path );
+            }
         }
         else
         {

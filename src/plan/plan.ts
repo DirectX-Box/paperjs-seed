@@ -152,6 +152,11 @@ export class Plan {
         this.manager.selectObject( this.getObjectId( path ) );
     }
 
+    public toggleSelection( path: paper.Path )
+    {
+        this.manager.toggleSelection( this.manager.getObject( this.getObjectId( path ) ) );
+    }
+
     // Met à jour l'objet.
     public updateObject( path: paper.Path ) : void
     {

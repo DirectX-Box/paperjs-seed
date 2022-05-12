@@ -92,10 +92,17 @@ export class ObjectInstancesManager
         this.drawAdapter.clearSelection();
     }
 
+    // Crée le bâtiment.
     public createBuilding( width: number, length: number, wallWidth: number ) : void
     {
         this.building = new PlanBuilding( width, length, wallWidth );
         this.drawAdapter.drawBuilding( this.building );
+    }
+
+    // Désélectionne l'objet passé en paramètre.
+    public deselectObject( object: PlanObject )
+    {
+        this.drawAdapter.removeObjectFromSelection( object );
     }
 
     // Crée un nouvel objet et l'ajoute au gestionnaire.
@@ -103,6 +110,11 @@ export class ObjectInstancesManager
     {
         let obj = this.builder.createObjectFromDefinition( objectDef, position );
         return this.addObject( obj );
+    }
+
+    public toggleSelection( object: PlanObject ) : void
+    {
+        this.drawAdapter.toggleSelectionOnObject( object );
     }
 
     // Ajoute un objet au gestionnaire.

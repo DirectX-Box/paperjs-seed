@@ -5,7 +5,7 @@ import { PlanObject } from "../PlanObject"
 export interface DrawAdapterInterface
 {
     // Efface la sélection.
-    clearSelection() : void
+    clearSelection() : void;
 
     // Efface le bâtiment passé en paramètre.
     deleteBuilding() : void;
@@ -20,5 +20,11 @@ export interface DrawAdapterInterface
     drawObject( object: PlanObject ) : void;
 
     // Sélectionne l'objet passé en paramètre.
-    selectObject( object: PlanObject ) : void
+    selectObject( object: PlanObject ) : void;
+
+    // Désélectionne l'objet en paramètre.
+    removeObjectFromSelection( object: PlanObject ) : void;
+
+    // Alterne la sélection de l'objet en paramètre.
+    toggleSelectionOnObject( object: PlanObject ) : void;
 }
