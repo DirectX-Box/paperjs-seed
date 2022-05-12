@@ -61,12 +61,12 @@ export class ObjectTool extends PaperTool
             return;
         }
 
-        const hit = paper.project.activeLayer.hitTest(event.downPoint);
+        const hit = paper.project.activeLayer.hitTest( event.downPoint );
 
         if ( hit != null && hit.item != null ) {
 
             let hitPath = hit.item as paper.Path;
-            if( hitPath && this.plan.isBuilding( hitPath ) )
+            if( hitPath && this.plan.isBuilding( hitPath ) && hit.type != "stroke" )
             {
                 this.isDrawing = true;
 
@@ -96,8 +96,16 @@ export class ObjectTool extends PaperTool
 
         if( this.isDrawing )
         {
-            this.lastPath.bounds = new Rectangle( event.downPoint, event.point );
-            this.plan.updateObject( this.lastPath );
+            this.onMouseDrag( event );
+            if( this.plan.isInsideBuilding( this.lastPath ) )
+            {
+                this.plan.updateObject( this.lastPath );
+            }
+            else
+            {
+                    this.plan.deleteObject( this.lastPath );
+                    this.isDrawing = false;
+            }
         }
     }
 }

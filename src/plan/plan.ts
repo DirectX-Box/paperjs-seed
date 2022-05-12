@@ -99,10 +99,28 @@ export class Plan {
         this.manager.clearSelection();
     }
 
+    // Supprime l'objet.
+    public deleteObject( path: paper.Path ) : void
+    {
+        this.manager.removeObject( this.getObjectId( path ) );
+    }
+
     // Vérifie que le Path passé en paramètre est le bâtiment.
     public isBuilding( path: paper.Path ) : boolean
     {
         return ( path == this.buildingPath );
+    }
+
+    public isInsideBuilding( path: paper.Path ) : boolean
+    {
+        if( !this.buildingPath )
+        {
+            return false;
+        }
+        else
+        {
+            return path.isInside( this.buildingPath.bounds ) && !path.intersects( this.buildingPath );
+        }
     }
 
     // Redimensionne une figure.

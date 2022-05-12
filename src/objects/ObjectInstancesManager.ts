@@ -120,6 +120,8 @@ export class ObjectInstancesManager
     // Retourne le nombre d'objets existants après retrait.
     public removeObject( key: number ) : number
     {
+        let obj = this.getObject( key );
+        this.drawAdapter.deleteObject( obj );
         this.objects.delete( key );
         return this.updateCount();
     }
@@ -127,11 +129,7 @@ export class ObjectInstancesManager
     // Dessine un objet.
     public drawObject( objectId: number ) : void
     {
-        let obj = this.objects.get( objectId );
-        if( !obj )
-        {
-            throw new Error( "Object " + objectId + " does not exist." )
-        }
+        let obj = this.getObject( objectId );
         this.drawAdapter.drawObject( obj );
     }
 
