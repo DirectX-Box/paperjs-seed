@@ -21,6 +21,7 @@ export class SelectTool extends PaperTool
         this.plan = Plan.getInstance();
 
         this.paperTool.onKeyDown = this.onKeyDown.bind( this );
+        this.paperTool.onKeyUp = this.onKeyUp.bind( this );
         this.paperTool.onMouseDown = this.onMouseDown.bind( this );
     }
 
@@ -44,6 +45,17 @@ export class SelectTool extends PaperTool
 
             case "delete": {
                 this.plan.deleteSelectedObjects();
+                break;
+            }
+        }
+    }
+
+    public onKeyUp( event: paper.KeyEvent ) : void
+    {
+        switch( event.key )
+        {
+            case "control": {
+                this.multiSelection = false;
                 break;
             }
         }
