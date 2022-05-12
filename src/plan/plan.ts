@@ -79,7 +79,7 @@ export class Plan {
     }
 
     // Redimensionne l'objet.
-    public resizeObject( path: paper.Path, origin: paper.Point, mouse: paper.Point, isInitial: boolean = false ) : paper.Point
+/*    public resizeObject( path: paper.Path, origin: paper.Point, mouse: paper.Point, isInitial: boolean = false ) : paper.Point
     {
         let id = this.paths.get( path );
         if( !id )
@@ -87,7 +87,8 @@ export class Plan {
             throw new Error( "Unknown object." );
         }
 
-        path.scale( mouse.x / origin.x, mouse.y / origin.y );
+
+        path.scale(origin.x / mouse.x, origin.y / mouse.y );
 
         let newPos = path.bounds.topLeft;
 
@@ -106,6 +107,7 @@ export class Plan {
 
         return newPos;
     }
+*/
 
     // Sélectionne l'objet.
     public selectObject( path: paper.Path ) : void
@@ -119,7 +121,7 @@ export class Plan {
     }
 
     // Met à jour l'objet.
-    public updateObject( path: paper.Path, isInitial: boolean = false ) : void
+    public updateObject( path: paper.Path, isInitial: boolean = false ) : paper.Point
     {
         let id = this.paths.get( path );
         if( !id )
@@ -131,7 +133,7 @@ export class Plan {
         if( !obj.isPermanent() || ( obj.isPermanent() && isInitial ) )
         {
             let objPath = obj.getShape();
-            obj.setOrigin( this.planPointFromPaperPoint( path.position ) );
+            obj.setOrigin( this.planPointFromPaperPoint( path.bounds.topLeft ) );
             objPath.clearShape();
             for( let segment of path.segments )
             {
@@ -139,6 +141,8 @@ export class Plan {
             }
             this.manager.drawObject( id );
         }
+
+        return path.bounds.topLeft;
     }
 
     // Convertit un point PaperJS vers un PlanPoint.

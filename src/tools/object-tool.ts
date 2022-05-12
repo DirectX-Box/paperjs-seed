@@ -15,7 +15,7 @@ export class ObjectTool extends PaperTool
 
     private plan : Plan;
 
-    public initPos : InstanceType< typeof paper.Point > | null = null;
+    private initPos : InstanceType< typeof paper.Point > | null = null;
 
     constructor( name: string, private readonly objToolBox: ObjectToolbox )
     {
@@ -64,8 +64,11 @@ export class ObjectTool extends PaperTool
     public onMouseDrag( event: paper.ToolEvent ): void {
 
         if ( this.initPos != null ) {
-            
-            this.plan.resizeObject( this.lastPath, this.initPos, event.point, true );
+
+            console.log( this.initPos + " " + event.point );
+            this.lastPath.bounds = new paper.Rectangle( this.initPos, event.point );
+
+            // this.initPos = this.plan.resizeObject( this.lastPath, this.initPos, event.point, true );
 
             /*this.currentObjShape?.remove();
             this.currentObjShape = this.buildObject!.updateShape(this.initPos, event.point);
@@ -74,8 +77,8 @@ export class ObjectTool extends PaperTool
         }
     }
 
-    public onMouseUp( event: paper.ToolEvent ): void {
-        const hit = paper.project.activeLayer.hitTest( event.point );
-        hit?.point.x;
+    public onMouseUp(): void {
+
+        this.plan.updateObject( this.lastPath );
     }
 }
