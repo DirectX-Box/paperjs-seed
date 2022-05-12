@@ -189,6 +189,7 @@ export class Plan {
     // Retourne l'identifiant de l'objet selon sa figure PaperJS.
     private getObjectId( path : paper.Path ) : number
     {
+        console.log(this.paths, path)
         let res = this.paths.get( path );
         if( !res )
         {

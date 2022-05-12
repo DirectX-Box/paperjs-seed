@@ -132,6 +132,7 @@ export class ObjectInstancesManager
     // Retourne le nombre d'objets existants après retrait.
     public removeObject( key: number ) : number
     {
+        console.log(this.objects)
         let obj = this.getObject( key );
         this.drawAdapter.deleteObject( obj );
         this.objects.delete( key );

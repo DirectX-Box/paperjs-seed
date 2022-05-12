@@ -83,28 +83,22 @@ export class ObjectTool extends PaperTool
             {
                 this.isDrawing = true;
 
-<<<<<<< HEAD
-            let currentObj = this.objToolBox.getCurrentObject();
-
-            this.plan.createObject( currentObj, event.point );
-
-            let stack = ActionStack.getInstance();
-            let point = new PlanPoint(event.point.x, event.point.y);
-            let new_action = new AddFurnitureAction(currentObj, point);
-
-            console.log(stack, point, new_action)
-            stack.pushNewAction(new_action);
+                let currentObj = this.objToolBox.getCurrentObject();
             /*this.buildObject = this.buildObjectToolbox.buildObject;
             this.currentObjShape = this.buildObject!.createShape(this.initPos);
             this.currentObjShape.fillColor = this.buildObject!.getColor();
             this.currentObjShape.selected = true;*/
+                let createdObj = this.plan.createObject( currentObj, event.downPoint );
 
-=======
-                this.plan.createObject( this.objToolBox.getCurrentObject(), event.downPoint );
+                let stack = ActionStack.getInstance();
+                let point = new PlanPoint(event.downPoint.x, event.downPoint.y);
+                let new_action = new AddFurnitureAction(createdObj, currentObj, point);
+
+                console.log(stack, point, new_action)
+                stack.pushNewAction(new_action);
 
                 this.lastPath = this.plan.getLastPath();
             }
->>>>>>> develop
         }
 
     }
@@ -123,11 +117,6 @@ export class ObjectTool extends PaperTool
         }
     }
 
-<<<<<<< HEAD
-    public onMouseUp( event: paper.ToolEvent ): void {
-        const hit = paper.project.activeLayer.hitTest( event.point );
-        hit?.point?.x;
-=======
     public onMouseUp( event : paper.ToolEvent ): void {
 
         if( this.lastPath && this.isDrawing )
@@ -143,6 +132,5 @@ export class ObjectTool extends PaperTool
                     this.isDrawing = false;
             }
         }
->>>>>>> develop
     }
 }

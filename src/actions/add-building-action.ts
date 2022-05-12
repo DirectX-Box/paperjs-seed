@@ -1,25 +1,24 @@
 import { Action, DeleteFurnitureAction } from '../actions';
-import { Plan } from '../plan/plan';
 import { PlanPoint } from '../objects/PlanPoint';
 import { PlanObject } from '../objects/PlanObject';
 import { ObjectDefinition } from '../objects/ObjectDefinition';
 import { ObjectInstancesManager } from '../objects/ObjectInstancesManager';
 
-export class AddFurnitureAction extends Action {
-  protected readonly name = "Pose";
+export class AddBuildingAction extends Action {
+  protected readonly name = "Construction";
 
   public item: number = 0;
-  public objectDef: ObjectDefinition;
+  public width: number;
+  public length: number;
+  public border: number;
   public spawnPos: PlanPoint;
 
   public constructor(
-                      index: number,
-                      objectDef: ObjectDefinition,
-                      position: PlanPoint) {
+                      width: number, length: number, border: number) {
     super();
-    this.item = index;
-    this.objectDef = objectDef;
-    this.spawnPos = position;
+    this.width = width;
+    this.length = length;
+    this.border = border;
   }
 
   public reverse(): DeleteFurnitureAction {
@@ -28,16 +27,11 @@ export class AddFurnitureAction extends Action {
 
   public execute(): void {
     let oim = ObjectInstancesManager.getInstance();
-    console.log(this.objectDef)
+      console.log(this.objectDef)
     let object: number = oim.createObjectFromDefinition(
       this.objectDef, this.spawnPos);
-    console.log(object)
-    if (object!) {
-      this.item = object;
-      let plan = Plan.getInstance();
-      let lastPath = plan.getLastPath();
-      plan.updateObject(lastPath)
-    }
+
+    if (object!) this.item = object;
   }
 
 }

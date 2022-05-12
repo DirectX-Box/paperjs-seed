@@ -22,7 +22,7 @@ export class DeleteFurnitureAction extends Action {
   }
 
   public reverse(): AddFurnitureAction {
-    return new AddFurnitureAction(this.objectDef, this.position);
+    return new AddFurnitureAction(this.item, this.objectDef, this.position);
   }
 
   public execute(): void {
