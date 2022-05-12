@@ -10,13 +10,17 @@ export class SelectTool extends PaperTool
 
     public readonly icon = icon( faFillDrip );
 
+    private multiSelection : boolean;
+
     private plan : Plan;
 
     constructor()
     {
         super();
+        this.multiSelection = false;
         this.plan = Plan.getInstance();
 
+        this.paperTool.onKeyDown = this.onKeyDown.bind( this );
         this.paperTool.onMouseDown = this.onMouseDown.bind( this );
     }
 
@@ -26,6 +30,23 @@ export class SelectTool extends PaperTool
 
     public disable(): void {
         super.disable();
+        this.plan.clearSelection();
+    }
+
+    public onKeyDown( event: paper.KeyEvent ) : void
+    {
+        switch( event.key )
+        {
+            case "control": {
+                this.multiSelection = true;
+                break;
+            }
+
+            case "delete": {
+                this.plan.deleteSelectedObjects();
+                break;
+            }
+        }
     }
 
     public onMouseDown( event: paper.ToolEvent ): void {
@@ -34,12 +55,23 @@ export class SelectTool extends PaperTool
 
         if ( hit != null && hit.item != null ) {
 
-            this.plan.selectObject( hit.item as paper.Path );
+            let path = hit.item as paper.Path;
 
-            /*this.buildObject = this.buildObjectToolbox.buildObject;
-            this.currentObjShape = this.buildObject!.createShape(this.initPos);
-            this.currentObjShape.fillColor = this.buildObject!.getColor();
-            this.currentObjShape.selected = true;*/
+            if( this.plan.isBuilding( path ) )
+            {
+                this.plan.clearSelection();
+                return;
+            }
+
+            if( this.multiSelection )
+            {
+                this.plan.toggleSelection( path );
+            }
+            else
+            {
+                this.plan.clearSelection();
+                this.plan.selectObject( path );
+            }
         }
         else
         {

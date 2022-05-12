@@ -1,4 +1,5 @@
 import { DrawAdapterInterface } from "./adapters/DrawAdapterInterface";
+import { PlanBuilding } from "./PlanBuilding";
 import { ObjectBuilder } from "./ObjectBuilder";
 import { ObjectCategory } from "./ObjectCategory";
 import { ObjectDefinition } from "./ObjectDefinition";
@@ -16,6 +17,9 @@ export class ObjectInstancesManager
 
     // Adaptateur d'affichage.
     private drawAdapter : DrawAdapterInterface;
+
+    // Liste des bâtiments du plan.
+    private building? : PlanBuilding;
 
     // Liste des objets sur le plan.
     private objects: Map< number, PlanObject >;
@@ -82,9 +86,23 @@ export class ObjectInstancesManager
         return obj;
     }
 
+    // Désélectionne tout élément sélectionné.
     public clearSelection() : void
     {
         this.drawAdapter.clearSelection();
+    }
+
+    // Crée le bâtiment.
+    public createBuilding( width: number, length: number, wallWidth: number ) : void
+    {
+        this.building = new PlanBuilding( width, length, wallWidth );
+        this.drawAdapter.drawBuilding( this.building );
+    }
+
+    // Désélectionne l'objet passé en paramètre.
+    public deselectObject( object: PlanObject )
+    {
+        this.drawAdapter.removeObjectFromSelection( object );
     }
 
     // Crée un nouvel objet et l'ajoute au gestionnaire.
@@ -92,6 +110,11 @@ export class ObjectInstancesManager
     {
         let obj = this.builder.createObjectFromDefinition( objectDef, position );
         return this.addObject( obj );
+    }
+
+    public toggleSelection( object: PlanObject ) : void
+    {
+        this.drawAdapter.toggleSelectionOnObject( object );
     }
 
     // Ajoute un objet au gestionnaire.
@@ -109,6 +132,8 @@ export class ObjectInstancesManager
     // Retourne le nombre d'objets existants après retrait.
     public removeObject( key: number ) : number
     {
+        let obj = this.getObject( key );
+        this.drawAdapter.deleteObject( obj );
         this.objects.delete( key );
         return this.updateCount();
     }
@@ -116,11 +141,7 @@ export class ObjectInstancesManager
     // Dessine un objet.
     public drawObject( objectId: number ) : void
     {
-        let obj = this.objects.get( objectId );
-        if( !obj )
-        {
-            throw new Error( "Object " + objectId + " does not exist." )
-        }
+        let obj = this.getObject( objectId );
         this.drawAdapter.drawObject( obj );
     }
 
