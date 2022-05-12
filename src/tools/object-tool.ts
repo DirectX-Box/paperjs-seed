@@ -18,7 +18,7 @@ export class ObjectTool extends PaperTool
     private isDrawing : boolean;
 
     // Dernière figure tracée.
-    private lastPath : paper.Path;
+    private lastPath? : paper.Path;
 
     // Instance du plan.
     private plan : Plan;
@@ -28,10 +28,10 @@ export class ObjectTool extends PaperTool
     {
         super();
         this.isDrawing = false;
-        this.lastPath = {} as paper.Path;
         this.name = name;
         this.plan = Plan.getInstance();
 
+        this.paperTool.onKeyDown = this.onKeyDown.bind( this );
         this.paperTool.onMouseDown = this.onMouseDown.bind( this );
         this.paperTool.onMouseDrag = this.onMouseDrag.bind( this );
         this.paperTool.onMouseUp = this.onMouseUp.bind( this );
@@ -48,6 +48,16 @@ export class ObjectTool extends PaperTool
 
         this.objToolBox.visible = false;
         this.isDrawing = false;
+    }
+
+    public onKeyDown( event: paper.KeyEvent ) : void
+    {
+        if( this.lastPath && this.lastPath.selected == true && event.key == "delete" )
+        {
+            this.plan.clearSelection();
+            this.plan.deleteObject( this.lastPath );
+            this.lastPath = undefined;
+        }
     }
 
     public onMouseDown( event: paper.ToolEvent ): void {
@@ -80,7 +90,7 @@ export class ObjectTool extends PaperTool
 
     public onMouseDrag( event: paper.ToolEvent ): void {
 
-        if( this.isDrawing )
+        if( this.lastPath &&this.isDrawing )
         {
             let rect = new Rectangle( event.downPoint, event.point );
 
@@ -94,7 +104,7 @@ export class ObjectTool extends PaperTool
 
     public onMouseUp( event : paper.ToolEvent ): void {
 
-        if( this.isDrawing )
+        if( this.lastPath && this.isDrawing )
         {
             this.onMouseDrag( event );
             if( this.plan.isInsideBuilding( this.lastPath ) )

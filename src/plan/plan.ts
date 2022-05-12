@@ -105,6 +105,21 @@ export class Plan {
         this.manager.removeObject( this.getObjectId( path ) );
     }
 
+    // Supprime les objets sélectionnés.
+    public deleteSelectedObjects() : void
+    {
+        let paths = paper.project.activeLayer.getItems( {
+            selected: true,
+            class: paper.Path,
+            recursive: true
+        } );
+
+        for( let path of paths )
+        {
+            this.deleteObject( path as paper.Path );
+        }
+    }
+
     // Vérifie que le Path passé en paramètre est le bâtiment.
     public isBuilding( path: paper.Path ) : boolean
     {
@@ -152,7 +167,6 @@ export class Plan {
             let relativeY = segment.point.y - path.position.y;
             objPath.addPoint( new PlanPoint( relativeX, relativeY ) );
         }
-        this.manager.drawObject( id );
     }
 
     // Convertit un point PaperJS vers un PlanPoint.

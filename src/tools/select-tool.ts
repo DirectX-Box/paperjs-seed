@@ -17,6 +17,7 @@ export class SelectTool extends PaperTool
         super();
         this.plan = Plan.getInstance();
 
+        this.paperTool.onKeyDown = this.onKeyDown.bind( this );
         this.paperTool.onMouseDown = this.onMouseDown.bind( this );
     }
 
@@ -26,6 +27,15 @@ export class SelectTool extends PaperTool
 
     public disable(): void {
         super.disable();
+        this.plan.clearSelection();
+    }
+
+    public onKeyDown( event: paper.KeyEvent ) : void
+    {
+        if( event.key == "delete" )
+        {
+            this.plan.deleteSelectedObjects();
+        }
     }
 
     public onMouseDown( event: paper.ToolEvent ): void {
@@ -34,12 +44,15 @@ export class SelectTool extends PaperTool
 
         if ( hit != null && hit.item != null ) {
 
-            this.plan.selectObject( hit.item as paper.Path );
+            let path = hit.item as paper.Path;
 
-            /*this.buildObject = this.buildObjectToolbox.buildObject;
-            this.currentObjShape = this.buildObject!.createShape(this.initPos);
-            this.currentObjShape.fillColor = this.buildObject!.getColor();
-            this.currentObjShape.selected = true;*/
+            if( this.plan.isBuilding( path ) )
+            {
+                this.plan.clearSelection();
+                return;
+            }
+
+            this.plan.selectObject( path );
         }
         else
         {

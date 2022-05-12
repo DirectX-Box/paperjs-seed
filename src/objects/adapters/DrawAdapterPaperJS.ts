@@ -23,19 +23,19 @@ export class DrawAdapterPaperJS implements DrawAdapterInterface
     private paperPaths: Map< PlanObject, paper.Path >;
 
     // Path sélectionné.
-    private selectedPath: paper.Path;
+    private selectedPath?: paper.Path;
 
     // Constructeur de l'adaptateur.
     public constructor()
     {
         this.paperBuilding = new paper.Path();
         this.paperPaths = new Map();
-        this.selectedPath = {} as paper.Path;
     }
 
     public clearSelection() : void
     {
-        this.selectedPath.selected = false;
+        if( this.selectedPath )
+            this.selectedPath.selected = false;
     }
 
     public deleteBuilding() : void
@@ -68,6 +68,7 @@ export class DrawAdapterPaperJS implements DrawAdapterInterface
         this.paperBuilding.strokeColor = new paper.Color( this.WALL );
         this.paperBuilding.strokeWidth = building.getWallWidth();
         this.paperBuilding.fillColor = new paper.Color( this.WHITE );
+        this.paperBuilding.sendToBack();
     }
 
     // Dessine l'objet passé en paramètre.
@@ -167,8 +168,11 @@ export class DrawAdapterPaperJS implements DrawAdapterInterface
     // Sélectionne la figure passée en paramètre.
     private selectPath( path: paper.Path ) : void
     {
-        this.selectedPath.selected = false;
+        if( this.selectedPath )
+            this.selectedPath.selected = false;
+            
         path.selected = true;
+        path.bringToFront();
         this.selectedPath = path;
     }
 }
