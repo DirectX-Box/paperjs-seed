@@ -8,17 +8,26 @@ import { Rectangle } from "paper/dist/paper-core";
 
 export class ObjectTool extends PaperTool
 {
+    // Nom de l'outil.
     public readonly name;
 
+    // Icône de l'outil.
     public readonly icon = icon(faHouse);
 
+    // Si l'outil est en cours de dessin.
+    private isDrawing : boolean;
+
+    // Dernière figure tracée.
     private lastPath : paper.Path;
 
+    // Instance du plan.
     private plan : Plan;
 
+    // Constructeur.
     constructor( name: string, private readonly objToolBox: ObjectToolbox )
     {
         super();
+        this.isDrawing = false;
         this.lastPath = {} as paper.Path;
         this.name = name;
         this.plan = Plan.getInstance();
@@ -38,47 +47,57 @@ export class ObjectTool extends PaperTool
         super.disable();
 
         this.objToolBox.visible = false;
+        this.isDrawing = false;
     }
 
     public onMouseDown( event: paper.ToolEvent ): void {
 
+        // Si je viens de finir de dessiner, ne pas re-créer un objet au
+        // prochain clic, déselectionnons simplement l'objet.
+        if( this.isDrawing )
+        {
+            this.isDrawing = false;
+            this.plan.clearSelection();
+            return;
+        }
+
         const hit = paper.project.activeLayer.hitTest(event.downPoint);
 
-        if ( hit == null || hit.item == null ) {
+        if ( hit != null && hit.item != null ) {
 
-            this.plan.createObject( this.objToolBox.getCurrentObject(), event.downPoint );
+            let hitPath = hit.item as paper.Path;
+            if( hitPath && this.plan.isBuilding( hitPath ) )
+            {
+                this.isDrawing = true;
 
-            this.lastPath = this.plan.getLastPath();
+                this.plan.createObject( this.objToolBox.getCurrentObject(), event.downPoint );
 
-            /*this.buildObject = this.buildObjectToolbox.buildObject;
-            this.currentObjShape = this.buildObject!.createShape(this.initPos);
-            this.currentObjShape.fillColor = this.buildObject!.getColor();
-            this.currentObjShape.selected = true;*/
-                
+                this.lastPath = this.plan.getLastPath();
+            }
         }
 
     }
 
     public onMouseDrag( event: paper.ToolEvent ): void {
 
-        // console.log( this.initPos + " " + event.point );
+        if( this.isDrawing )
+        {
+            let rect = new Rectangle( event.downPoint, event.point );
 
-        // this.plan.resizePath( this.lastPath, event.downPoint, event.point, true );
-        this.lastPath.bounds = new Rectangle( event.downPoint, event.point );
+            // Drawing glitches out if width or height is 0, so don't resize.
+            if( rect.width == 0 || rect.height == 0 )
+                return;
 
-        // Keeps aspect ratio, so not what we want.
-        // this.lastPath.fitBounds( new paper.Rectangle( this.initPos, event.point ), true );
-
-        // this.initPos = this.plan.resizeObject( this.lastPath, this.initPos, event.point, true );
-
-        /*this.currentObjShape?.remove();
-        this.currentObjShape = this.buildObject!.updateShape(this.initPos, event.point);
-        this.currentObjShape.fillColor = this.buildObject!.getColor();
-        this.currentObjShape.selected = true;*/
-
+            this.lastPath.bounds = rect;
+        }
     }
 
-    public onMouseUp(): void {
-        this.plan.updateObject( this.lastPath );
+    public onMouseUp( event : paper.ToolEvent ): void {
+
+        if( this.isDrawing )
+        {
+            this.lastPath.bounds = new Rectangle( event.downPoint, event.point );
+            this.plan.updateObject( this.lastPath );
+        }
     }
 }

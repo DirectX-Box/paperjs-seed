@@ -5,7 +5,9 @@ import { ObjectInstancesManager } from '../objects/ObjectInstancesManager';
 import { PlanPoint } from '../objects/PlanPoint';
 import { Toolbar } from '../toolbar';
 import { ToolboxesContainer } from '../toolbox';
+import { BuildingToolbox } from '../toolboxes/building-toolbox';
 import { ObjectToolbox } from '../toolboxes/object-toolbox';
+import { BuildingTool } from '../tools/building-tool';
 import { ObjectTool } from '../tools/object-tool';
 import { SelectTool } from '../tools/select-tool';
 
@@ -13,6 +15,9 @@ export class Plan {
 
     // Instance unique du plan.
     private static instance : Plan;
+
+    // Figure du bâtiment.
+    private buildingPath? : paper.Path;
 
     // Gestionnaire d'objets.
     private manager : ObjectInstancesManager;
@@ -45,7 +50,11 @@ export class Plan {
         // decagon.fillColor = new paper.Color('#e9e9ff');
         // decagon.selected = true;
 
-        toolbar.addTool( new SelectTool );
+        const buildingToolBox = new BuildingToolbox();
+        toolboxes.addToolbox( buildingToolBox );
+
+        toolbar.addTool( new SelectTool() );
+        toolbar.addTool( new BuildingTool( buildingToolBox ) );
 
         let defs = this.manager.readDefinitions();
 
@@ -57,6 +66,22 @@ export class Plan {
         }
     }
 
+    // Vérifie si un bâtiment peut être créé.
+    public canBuildingBeCreated() : boolean
+    {
+        return ( !this.buildingPath );
+    }
+
+    // Crée un bâtiment.
+    public createBuilding( width : number, length : number, wallWidth : number ) : void
+    {
+        if( !this.canBuildingBeCreated )
+            return;
+
+        this.manager.createBuilding( width, length, wallWidth );
+        this.buildingPath = this.getLastPath();
+    }
+
     // Crée un nouvel objet.
     public createObject( objDef : ObjectDefinition, point: paper.Point ) : number
     {
@@ -64,10 +89,6 @@ export class Plan {
         let id = this.manager.createObjectFromDefinition( objDef, planpoint );
         this.manager.drawObject( id );
         let createdPath = this.getLastPath();
-        if( !createdPath )
-        {
-            throw new Error( "Could not get created path." );
-        }
         this.paths.set( createdPath as paper.Path , id );
         return id;
     }
@@ -76,6 +97,12 @@ export class Plan {
     public clearSelection() : void
     {
         this.manager.clearSelection();
+    }
+
+    // Vérifie que le Path passé en paramètre est le bâtiment.
+    public isBuilding( path: paper.Path ) : boolean
+    {
+        return ( path == this.buildingPath );
     }
 
     // Redimensionne une figure.

@@ -2,10 +2,22 @@ import { DrawAdapterInterface } from "./DrawAdapterInterface";
 import { PlanObject } from "../PlanObject";
 import { PlanPoint } from "../PlanPoint";
 import * as paper from "paper";
+import { PlanBuilding } from "../PlanBuilding";
+import { Point } from "paper/dist/paper-core";
 
 export class DrawAdapterPaperJS implements DrawAdapterInterface
 {
+    // Constante de conversion d'une intensité de couleur en octet (0 - 255) vers un flottant.
     private readonly BYTE_COLOR_TO_FLOAT = ( 1 / 255 );
+
+    // Constante de la couleur des murs principaux.
+    private readonly WALL = "#607D8B";
+
+    // Constante de la couleur blanche dans PaperJS.
+    private readonly WHITE = "#FFFFFF";
+
+    // Dessin du bâtiment.
+    private paperBuilding: paper.Path;
 
     // Stocke toutes les figures du plan.
     private paperPaths: Map< PlanObject, paper.Path >;
@@ -16,6 +28,7 @@ export class DrawAdapterPaperJS implements DrawAdapterInterface
     // Constructeur de l'adaptateur.
     public constructor()
     {
+        this.paperBuilding = new paper.Path();
         this.paperPaths = new Map();
         this.selectedPath = {} as paper.Path;
     }
@@ -23,6 +36,11 @@ export class DrawAdapterPaperJS implements DrawAdapterInterface
     public clearSelection() : void
     {
         this.selectedPath.selected = false;
+    }
+
+    public deleteBuilding() : void
+    {
+        this.paperBuilding.remove();
     }
 
     // Efface l'objet passé en paramètre.
@@ -35,6 +53,21 @@ export class DrawAdapterPaperJS implements DrawAdapterInterface
         }
 
         this.paperPaths.delete( object );
+    }
+
+    // Dessine le bâtiment passé en paramètre.
+    public drawBuilding( building: PlanBuilding ): void
+    {
+        this.deleteBuilding();
+        let w = building.getWidth();
+        let l = building.getLength();
+        let size = new paper.Size( l, w );
+        let topLeftX = paper.project.activeLayer.position.x - l / 2;
+        let topLeftY = paper.project.activeLayer.position.x - w / 2;
+        this.paperBuilding = new paper.Path.Rectangle( new Point( topLeftX, topLeftY ), size );
+        this.paperBuilding.strokeColor = new paper.Color( this.WALL );
+        this.paperBuilding.strokeWidth = building.getWallWidth();
+        this.paperBuilding.fillColor = new paper.Color( this.WHITE );
     }
 
     // Dessine l'objet passé en paramètre.

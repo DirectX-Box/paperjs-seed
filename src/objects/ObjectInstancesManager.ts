@@ -1,4 +1,5 @@
 import { DrawAdapterInterface } from "./adapters/DrawAdapterInterface";
+import { PlanBuilding } from "./PlanBuilding";
 import { ObjectBuilder } from "./ObjectBuilder";
 import { ObjectCategory } from "./ObjectCategory";
 import { ObjectDefinition } from "./ObjectDefinition";
@@ -16,6 +17,9 @@ export class ObjectInstancesManager
 
     // Adaptateur d'affichage.
     private drawAdapter : DrawAdapterInterface;
+
+    // Liste des bâtiments du plan.
+    private building? : PlanBuilding;
 
     // Liste des objets sur le plan.
     private objects: Map< number, PlanObject >;
@@ -82,9 +86,16 @@ export class ObjectInstancesManager
         return obj;
     }
 
+    // Désélectionne tout élément sélectionné.
     public clearSelection() : void
     {
         this.drawAdapter.clearSelection();
+    }
+
+    public createBuilding( width: number, length: number, wallWidth: number ) : void
+    {
+        this.building = new PlanBuilding( width, length, wallWidth );
+        this.drawAdapter.drawBuilding( this.building );
     }
 
     // Crée un nouvel objet et l'ajoute au gestionnaire.
