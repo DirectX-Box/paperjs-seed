@@ -39,17 +39,17 @@ export class App {
         toolbar.addTool(new UndoTool(undoToolbox));
         toolbar.addTool(new RedoTool(redoToolbox));
 
-        this.initializePlan();
+        this.initializePlan( toolboxes, toolbar );
     }
 
-    private initializePlan(): void {
+    private initializePlan( toolboxes : ToolboxesContainer, toolbar: Toolbar ): void {
         const canvas = document.createElement('canvas');
         this.element.appendChild(canvas);
 
         paper.setup(canvas);
 
-        const plan = new Plan();
+        const plan = Plan.getInstance();
 
-        plan.initialize();
+        plan.initialize( toolboxes, toolbar );
     }
 }
