@@ -98,8 +98,6 @@ export class SelectTool extends PaperTool
                 this.plan.clearSelection();
                 this.plan.selectObject( path );
 
-                console.log( "Selected" );
-
                 const hitCorner = path.hitTest( event.downPoint, {
                     bounds: true
                 });

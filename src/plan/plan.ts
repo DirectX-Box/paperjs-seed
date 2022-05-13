@@ -108,15 +108,10 @@ export class Plan {
     // Supprime les objets sélectionnés.
     public deleteSelectedObjects() : void
     {
-        let paths = paper.project.activeLayer.getItems( {
-            selected: true,
-            class: paper.Path,
-            recursive: true
-        } );
-
-        for( let path of paths )
+        for( let path of paper.project.activeLayer.children )
         {
-            this.deleteObject( path as paper.Path );
+            if( path.bounds.selected )
+                this.deleteObject( path as paper.Path );
         }
     }
 
