@@ -127,7 +127,7 @@ export class ActionStack {
           let shift_stack = this.redoStack.shift();
           if (shift_stack && shift_stack.getName() != "Null") {
             shift_stack.execute();
-            this.pushInUndoStack(this.currentAction);
+            this.pushInUndoStack(this.currentAction.reverse());
             this.currentAction = shift_stack;
             console.log("[", i, "] redo: ", shift_stack)
             if (isMessageBoxAvailable)

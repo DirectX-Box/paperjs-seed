@@ -92,13 +92,16 @@ export class ObjectTool extends PaperTool
 
                 let stack = ActionStack.getInstance();
                 let point = new PlanPoint(event.downPoint.x, event.downPoint.y);
+                this.lastPath = this.plan.getLastPath();
                 let new_action = new AddFurnitureAction(
-                  [createdObj], [currentObj], [point]);
+                  [createdObj], [currentObj], [point],
+                  [(this.lastPath!) ? this.lastPath.bounds : new Rectangle(
+                    event.downPoint, event.point
+                  )]);
 
                 console.log(stack, point, new_action)
                 stack.pushNewAction(new_action);
 
-                this.lastPath = this.plan.getLastPath();
             }
         }
 

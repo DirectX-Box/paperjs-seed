@@ -4,6 +4,7 @@ import { PlanPoint } from '../objects/PlanPoint';
 import { PlanObject } from '../objects/PlanObject';
 import { ObjectDefinition } from '../objects/ObjectDefinition';
 import { ObjectInstancesManager } from '../objects/ObjectInstancesManager';
+import * as paper from "paper";
 
 // Action représentant l'ajout d'un meuble sur le Plan
 export class AddFurnitureAction extends Action {
@@ -16,22 +17,28 @@ export class AddFurnitureAction extends Action {
   public objectDef: Array<ObjectDefinition>;
   // Origine du point dans le Plan
   public spawnPos: Array<PlanPoint>;
+  // Origine du point dans le Plan
+  public boundRects: Array<paper.Rectangle>;
   // Nombre d'items à ajouter
   public nbItems: number = 1;
 
   public constructor(
                       index: Array<number>,
                       objectDef: Array<ObjectDefinition>,
-                      position: Array<PlanPoint>) {
+                      position: Array<PlanPoint>,
+                      boundRects: Array<paper.Rectangle>) {
     super();
     this.item = index;
     this.objectDef = objectDef;
     this.spawnPos = position;
-    this.nbItems = Math.min(index.length, objectDef.length, position.length)
+    this.boundRects = boundRects;
+    this.nbItems = Math.min(
+      index.length, objectDef.length, position.length, boundRects.length)
   }
 
   public reverse(): DeleteFurnitureAction {
-    return new DeleteFurnitureAction(this.item, this.objectDef, this.spawnPos);
+    return new DeleteFurnitureAction(
+      this.item, this.objectDef, this.spawnPos, this.boundRects);
   }
 
   public execute(): void {
@@ -40,15 +47,18 @@ export class AddFurnitureAction extends Action {
     console.log(this.objectDef)
     let plan = Plan.getInstance();
 
-    for (let i = 0; i <= this.nbItems; i++) {
-      let object: number = oim.createObjectFromDefinition(
-        this.objectDef[i], this.spawnPos[i]);
+    for (let i = 0; i < this.nbItems; i++) {
+      let object: number = plan.createObject(
+        this.objectDef[i],
+        new paper.Point(this.spawnPos[i].getX(), this.spawnPos[i].getY())
+      );
 
       console.log(object)
       if (object!) {
         this.item[i] = object;
         let lastPath = plan.getLastPath();
-        plan.updateObject(lastPath)
+        lastPath.bounds = this.boundRects[i];
+        //plan.updateObject(lastPath)
       }
     }
   }

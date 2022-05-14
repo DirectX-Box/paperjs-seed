@@ -16,27 +16,34 @@ export class DeleteFurnitureAction extends Action {
   // Origine du point dans le Plan
   //    Utilisé pour générer l'action inverse
   public position: Array<PlanPoint>;
+  // Origine du point dans le Plan
+  //    Utilisé pour générer l'action inverse
+  public boundRects: Array<paper.Rectangle>;
   // Nombre d'items à ajouter
   public nbItems: number = 1;
 
   public constructor(
                       referredItem: Array<number>,
                       objectDef: Array<ObjectDefinition>,
-                      position: Array<PlanPoint>) {
+                      position: Array<PlanPoint>,
+                      boundRects: Array<paper.Rectangle>) {
     super();
     this.item = referredItem;
     this.objectDef = objectDef;
     this.position = position;
-    this.nbItems = Math.min(referredItem.length, objectDef.length, position.length)
+    this.boundRects = boundRects;
+    this.nbItems = Math.min(
+      referredItem.length, objectDef.length, position.length, boundRects.length)
   }
 
   public reverse(): AddFurnitureAction {
-    return new AddFurnitureAction(this.item, this.objectDef, this.position);
+    return new AddFurnitureAction(
+      this.item, this.objectDef, this.position, this.boundRects);
   }
 
   public execute(): void {
     let oim = ObjectInstancesManager.getInstance();
-    for (let i = 0; i <= this.nbItems; i++) {
+    for (let i = 0; i < this.nbItems; i++) {
       let object: number = oim.removeObject(this.item[i]);
     }
   }
