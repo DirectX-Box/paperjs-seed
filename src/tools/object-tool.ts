@@ -92,7 +92,8 @@ export class ObjectTool extends PaperTool
 
                 let stack = ActionStack.getInstance();
                 let point = new PlanPoint(event.downPoint.x, event.downPoint.y);
-                let new_action = new AddFurnitureAction(createdObj, currentObj, point);
+                let new_action = new AddFurnitureAction(
+                  [createdObj], [currentObj], [point]);
 
                 console.log(stack, point, new_action)
                 stack.pushNewAction(new_action);

@@ -52,9 +52,6 @@ export class UndoToolbox extends Toolbox {
           console.log('Clicked on ', name, list[name], "(", event, ")");
           await action_stack.undo(Number(name));
           this.listActions();
-          if (this.redo_toolbox) {
-            this.redo_toolbox.listActions()
-          }
           console.log("Undo: ", action_stack.getUndoNamesList())
         });
         item.appendChild(text_node);

@@ -1,3 +1,5 @@
+import * as paper from "paper";
+
 // Couleur au format RVB.
 export class PlanColor
 {
@@ -66,6 +68,11 @@ export class PlanColor
     public getTransparency(): number
     {
         return this.alpha;
+    }
+
+    public toColor(): paper.Color
+    {
+        return new paper.Color(this.red, this.green, this.blue, this.alpha)
     }
 
     // Retourne toutes les valeurs composant cette couleur dans un tableau.

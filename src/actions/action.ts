@@ -1,5 +1,5 @@
 
-
+// Abstraction des actions de l'historique Défaire/Refaire
 export abstract class Action {
   protected abstract readonly name: string;
 

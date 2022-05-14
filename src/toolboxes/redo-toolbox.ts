@@ -28,11 +28,6 @@ export class RedoToolbox extends Toolbox {
     }*/
 
     public listActions(): void {
-      /*if (this.action_stack == undefined) {
-        console.log("action_stack undefined")
-        return;// document.createElement("div");
-      }*/
-
       if (this.actionList != undefined) {
         this.actionList.innerHTML = "";
       }
@@ -47,14 +42,12 @@ export class RedoToolbox extends Toolbox {
       for (let name in list) {
         let item = document.createElement("div");
         item.classList.add('action-item');
+
         let text_node = document.createTextNode(list[name])
         item.addEventListener('click', async (event) => {
           console.log('Clicked on ', name, list[name], "(", event, ")");
           await action_stack.redo(Number(name));
           this.listActions();
-          if (this.undo_toolbox) {
-            this.undo_toolbox.listActions()
-          }
           console.log("Redo: ", action_stack.getRedoNamesList())
         });
         item.appendChild(text_node);

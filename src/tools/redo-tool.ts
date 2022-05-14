@@ -4,6 +4,7 @@ import { faForwardStep } from '@fortawesome/free-solid-svg-icons';
 import { PaperTool } from '../toolbar';
 import { RedoToolbox } from '../toolboxes';
 
+// Bouton d'outil Refaire dans la barre d'outils
 export class RedoTool extends PaperTool {
     public readonly name = 'Refaire';
 
