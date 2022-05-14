@@ -38,7 +38,7 @@ export class DrawAdapterPaperJS implements DrawAdapterInterface
     {
         for( let path of this.paperPaths.values() )
         {
-            path.selected = false;
+            path.bounds.selected = false;
         }
 
         this.selectedPaths.clear();
@@ -102,7 +102,7 @@ export class DrawAdapterPaperJS implements DrawAdapterInterface
         const obj = this.selectedPaths.get( object );
         if( obj )
         {
-            obj.selected = false;
+            obj.bounds.selected = false;
             this.selectedPaths.delete( object );
         }
     }
@@ -135,7 +135,6 @@ export class DrawAdapterPaperJS implements DrawAdapterInterface
     {
         let origin = this.paperPointFromPlanPoint( object.getOrigin() );
         let shapeToDraw = new paper.Path.Circle( origin, object.getShape().getRadius() );
-        shapeToDraw.selected = true;
 
         this.fillColor( shapeToDraw, object );
 
@@ -199,7 +198,7 @@ export class DrawAdapterPaperJS implements DrawAdapterInterface
     // Sélectionne la figure passée en paramètre.
     private selectPath( object: PlanObject, path: paper.Path ) : void
     {
-        path.selected = true;
+        path.bounds.selected = true;
         path.bringToFront();
         this.selectedPaths.set( object, path );
     }
