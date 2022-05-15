@@ -1,67 +1,57 @@
-# Seed Paper.js
+# Plan Paper.js
 
 Cours d'architecture — Programmation orientée objet
 
-## Technologies
+# Exécution
 
-Voici la liste des technologies mises en jeu :
+* NodeJS est requis.
 
- - [Node](https://nodejs.org/en), un [runtime](https://fr.wikipedia.org/wiki/Environnement_d%27ex%C3%A9cution)
-   JavaScript, mais pas dans un navigateur. Il vous permettra d'installer les dépendances nécessaires et de compiler le
-   projet.
+```
+git clone "https://github.com/DirectX-Box/paperjs-seed.git"
+cd "paperjs-seed"
+npm install
+npm run serve
+```
 
- - [yarn](https://yarnpkg.com), un gestionnaire de dépendances JavaScript (alternative généralement plus robuste et
-   rapide à npm).
+## Répartition
 
- - [Webpack](https://webpack.js.org), un bundler JavaScript, il permet de compiler votre projet dans quelque chose qui
-   puisse s'ouvrir dans un navigateur web.
+### Partie logique
 
- - [TypeScript](https://www.typescriptlang.org), un superset de JavaScript qui ajoute à ce dernier du
-   [typage structurel](https://en.wikipedia.org/wiki/Structural_type_system).
-   Il se compile en JavaScript pur (au runtime, les types n'existent plus, les seules vérifications se passent à la
-   compilation !).
+La partie logique fournit le modèle et le contrôleur du logiciel.  
 
- - [Paper.js](http://paperjs.org/about), une librairie de manipulation de graphiques vectoriels, qui effectue son rendu
-   sur [canvas](https://developer.mozilla.org/fr/docs/Web/API/Canvas_API).
+Elle est contenue dans le répertoire `src\objects` et est indépendante 
+de l'interface PaperJS.  
 
-## Installation
+Cette partie du code est conçue pour être ré-utilisable indépendamment 
+des autres modules. Elle permet aussi de formaliser les objets métier et 
+de les « sérialiser » indépendamment de PaperJS. Ainsi, les sauvegardes des 
+plans ne sont pas liées à PaperJS.
 
- - Installer [Volta](https://volta.sh/), un gestionnaire de versions pour Node, yarn et npm.
-   - Note : Si vous avez déjà Node et yarn sur votre machine, vous pouvez vous en passer du moment que tout fonctionne.
-   - Désormais, quand vous ouvrirez le dossier du projet dans un terminal, volta devrait automatiquement télécharger les
-     bonnes versions de node et npm. Testez en tapant `node --version` par exemple. 
- - Exécuter `yarn install` pour installer les dépendances listées dans le fichier `package.json`.
+Les objets ne sont pas codés en dur dans le code. Afin de permettre l'ajout 
+d'éléments sans modifier le code source, les objets sont analysés au lancement 
+depuis le fichier `src\objects\objects.json`, qui définit les catégories d'objets 
+ainsi que les objets eux-mêmes.  
+Les objets peuvent posséder un nombre arbitraire de sommets, qui peuvent être 
+échelonnés (*scaled*) sur l'axe horizontal ou vertical à volonté dans le logiciel.
 
-## Lancer l'application
+### Partie affichage
 
- - En développement, pour bénéficier de la recompilation et du rechargement automatique quand on modifie un fichier
-   source, utilisez **`yarn serve`**.
-   - Cette commande ouvrira automatiquement votre application dans votre navigateur par défaut sur,
-     http://localhost:8080/.
-   - Pour couper le serveur une fois lancé, on utilise CTRL+C comme pour toute autre commande, ou bien l'on ferme le
-     terminal.
+L'affichage des objets est géré à travers une classe « Adaptateur » 
+appelée par le contrôleur. Ce code est situé dans `src\objects\adapters`.  
 
- - Pour compiler l'application de manière statique, lancez **`yarn build`**.
-   - Le résultat se trouvera dans `dist/`. C'est ce qu'on uploaderait sur un serveur en ligne si l'on voulait rendre notre
-     application publique. 
+Le reste de l'application ne peut pas accéder directement à cet adaptateur. 
+L'architecture impose au module d'entrée utilisateur de passer par 
+le contrôleur "ObjectInstancesManager" pour gérer les objets.
 
-## Structure du projet
+### Partie entrée utilisateur
 
-Si vous êtes peu familier avec le développement web moderne...
+Bien que le contrôleur soit nécessaire pour instancier et gérer les objets, 
+il est possible pour le module d'affichage de gérer lui-même certaines étapes 
+telles que le dessin. Par exemple, il n'est pas utile d'imposer au contrôleur 
+le redimensionnement d'un objet pixel par pixel, surtout que le placement peut 
+être invalide ; ainsi, la gestion de l'entrée utilisateur se fait principalement 
+au travers de la classe Plan, qui connecte les outils de dessin au contrôleur.
 
- - `src` C'est le répertoire principal des sources de l'application. Rien de ce qui constitue l'application ne devrait
-   se trouver en dehors.
-   - `index.html` Fichier HTML hébergeant notre canvas pour paper.js, et incluant le fichier JavaScript généré par
-     Webpack (qui intégrera lui-même la balise `<script>` nécessaire !).
-   - `index.ts` Point d'entrée de l'application. Vous pouvez charger d'autre fichiers TypeScript à partir de celui-là, à
-     l'aide d'imports.
- - `.gitignore` Spécifie les fichiers propres à votre machine (résultat de compilation, dépendances installées, etc) que
-   Git ne doit pas inclure dans le dépôt.
- - `package.json` Contient la liste des dépendances JavaScript, plus un peu de configuration comme les commandes
-   `yarn build` et `yarn serve`.
- - `tsconfig.json` Contient la configuration pour le compilateur TypeScript. On peut y modifier quelque peu le 
-   comportement du langage et du compilateur.
- - `webpack.config.js` Contient la configuration Webpack nécessaire pour compiler le projet.
- - `yarn.lock` est un fichier autogénéré dérivé des dépendances indiquées dans `package.json`, permettant à chaque
-   personne travaillant sur le projet d'utiliser exactement les mêmes dépendances, assurant ainsi des comportements
-   reproductibles.
+C'est aussi le Plan qui initialise certains outils de l'interface en fonction 
+des données fournies par la partie logique. La barre d'outils est générée 
+dynamiquement en fonction des objets analysés par le contrôleur.
